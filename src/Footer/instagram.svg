@@ -1,0 +1,19 @@
+<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>instagram</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(1 -1314)">
+<g id="ic/24/social/instagram">
+<g id="Combined Shape">
+<use xlink:href="#path0_fill" transform="translate(7.16 1319.6)" fill="#484848"/>
+</g>
+<mask id="mask0_outline" mask-type="alpha">
+<g id="Combined Shape">
+<use xlink:href="#path0_fill" transform="translate(7.16 1319.6)" fill="#FFFFFF"/>
+</g>
+</mask>
+</g>
+</g>
+<defs>
+<path id="path0_fill" fill-rule="evenodd" d="M 8.27491 0.234131C 8.42335 0.085083 8.62982 0 8.84 0C 9.05091 0 9.25746 0.085083 9.40582 0.234131C 9.55491 0.382568 9.64 0.589111 9.64 0.800049C 9.64 1.01013 9.55491 1.21667 9.40582 1.36584C 9.25673 1.51416 9.05091 1.59998 8.84 1.59998C 8.62982 1.59998 8.42327 1.51416 8.27491 1.36584C 8.12582 1.21667 8.04 1.01025 8.04 0.800049C 8.04 0.589111 8.12575 0.382568 8.27491 0.234131ZM 0 6.40002C 0 8.51733 1.72271 10.2397 3.84 10.2397C 5.95729 10.2397 7.68 8.51733 7.68 6.40002C 7.68 4.28259 5.95742 2.56006 3.84 2.56006C 1.72258 2.56006 0 4.28259 0 6.40002Z"/>
+</defs>
+</svg>

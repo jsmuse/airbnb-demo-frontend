@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["fp", "react"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:fp/recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "no-var": "error",
+    "fp/no-let": "error"
+  }
+}

@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import next from "./next.svg";
+import React from 'react';
+import styled from 'styled-components';
+import next from './next.svg';
 
 const BtnNext = styled.button`
   display: none;
@@ -21,10 +21,8 @@ const BtnNext = styled.button`
   }
 `;
 
-export default () => {
-  return (
-    <BtnNext>
-      <img src={next} alt="arrow" />
-    </BtnNext>
-  );
-};
+export default () => (
+  <BtnNext>
+    <img src={next} alt="arrow" />
+  </BtnNext>
+);

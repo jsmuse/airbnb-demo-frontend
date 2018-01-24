@@ -1,33 +1,33 @@
-import React from "react";
-import styled from "styled-components";
-import Dates from "./Dates";
-import moment from "moment";
+import React from 'react';
+import styled from 'styled-components';
+import Dates from './Dates';
+import moment from 'moment';
 
 export default class Dropdown extends React.Component {
   state = {
     isOpen: false,
     startDate: this.props.startDate,
     endDate: this.props.endDate,
-    isApply: false
+    isApply: false,
   };
 
   handleClickOutside = () => {
     this.setState(prevState => ({
-      isOpen: false
+      isOpen: false,
     }));
   };
 
   dateChange = () => {
     this.setState(prevState => ({
       startDate: null,
-      endDate: null
+      endDate: null,
     }));
   };
   /*
   applyDates = () => {
     this.setState({ isApply: true });
     this.openModal();
-  };*/
+  }; */
 
   onChange = (startDate, endDate) => {
     this.setState({ startDate, endDate });

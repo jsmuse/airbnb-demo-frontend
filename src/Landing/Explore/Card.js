@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Col } from "react-flexbox-grid";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Col } from 'react-flexbox-grid';
+import { Link } from 'react-router-dom';
 
 const Container = styled(Link)`
   text-decoration: none;
@@ -50,13 +50,11 @@ const Picture = styled.img`
   }
 `;
 
-export default props => {
-  return (
-    <Col xs={6} sm={5} md={4}>
-      <Container to={props.children}>
-        <Picture src={props.picSrc} srcSet={props.pic2xSrc} alt="img explore" />
-        <Text>{props.children}</Text>
-      </Container>
-    </Col>
-  );
-};
+export default props => (
+  <Col xs={6} sm={5} md={4}>
+    <Container to={props.children}>
+      <Picture src={props.picSrc} srcSet={props.pic2xSrc} alt="img explore" />
+      <Text>{props.children}</Text>
+    </Container>
+  </Col>
+);

@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Grid, Row, Col } from "react-flexbox-grid";
-import Dates from "./Dates/Dates";
+import React from 'react';
+import styled from 'styled-components';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import Dates from './Dates/Dates';
 
 const Button = styled.button`
   display: inline-block;
@@ -52,7 +52,7 @@ export default class Filters extends React.Component {
   state = {
     isOpen: false,
     startDate: null,
-    endDate: null
+    endDate: null,
   };
 
   openModal = () => {
@@ -61,8 +61,8 @@ export default class Filters extends React.Component {
 
   saveDates = (startDate, endDate) => {
     this.setState({
-      startDate: startDate,
-      endDate: endDate
+      startDate,
+      endDate,
     });
   };
 

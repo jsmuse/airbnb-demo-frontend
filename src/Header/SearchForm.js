@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import searchIcon from "./search.svg";
+import React from 'react';
+import styled from 'styled-components';
+import searchIcon from './search.svg';
 
 const Container = styled.div`
   position: relative;
@@ -29,11 +29,9 @@ const Icon = styled.label`
   width: 20px;
 `;
 
-export default () => {
-  return (
-    <Container>
-      <Icon />
-      <Search type="text" placeholder="Try “Miami”" />
-    </Container>
-  );
-};
+export default () => (
+  <Container>
+    <Icon />
+    <Search type="text" placeholder="Try “Miami”" />
+  </Container>
+);

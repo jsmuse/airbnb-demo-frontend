@@ -1,13 +1,10 @@
 {
   "parser": "babel-eslint",
   "plugins": ["fp", "react"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:fp/recommended",
-    "plugin:react/recommended"
-  ],
+  "extends": ["airbnb"],
   "env": {
     "browser": true,
+    "commonjs": true,
     "node": true,
     "es6": true
   },
@@ -19,6 +16,9 @@
     }
   },
   "rules": {
+    "react/props-types": false,
+    "jsx-a11y/anchor-is-valid": false,
+    "react/jsx-filename-extension": "off",
     "no-unused-vars": "error",
     "no-var": "error",
     "fp/no-let": "error"

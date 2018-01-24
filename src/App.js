@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import "./App.css";
-import { BrowserRouter, Route } from "react-router-dom";
-import Landing from "./Landing/";
-import Header from "./Header";
-import Homes from "./Homes";
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import './App.css';
+import Landing from './Landing/';
+import Header from './Header';
+import Homes from './Homes';
 
-class App extends Component {
+export default class App extends React.Component {
   render() {
     return (
       <div>
@@ -20,5 +20,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

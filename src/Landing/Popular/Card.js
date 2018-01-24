@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Row, Col } from "react-flexbox-grid";
+import React from 'react';
+import styled from 'styled-components';
+import { Row, Col } from 'react-flexbox-grid';
 
 const Card = styled.div`
   display: flex;
@@ -35,37 +35,35 @@ const Place = styled.p`
   font-size: 0.625rem;
 `;
 
-export default props => {
-  return (
-    <Col xs={6} sm={4} md={3}>
-      <Card>
-        <Image
-          src={props.picSrc}
-          srcSet={props.picSrc2x}
-          alt="image experiense"
-        />
-        <Row start="xs" top="xs">
-          <Col xs>
-            <TextContainer>
-              <Place>{props.place}</Place>
-            </TextContainer>
-          </Col>
-        </Row>
-        <Row start="xs" top="xs">
-          <Col xs>
-            <TextContainer>
-              <Name>{props.title}</Name>
-            </TextContainer>
-          </Col>
-        </Row>
-        <Row start="xs">
-          <Col xs>
-            <TextContainer>
-              <Price>About ${props.price} per person</Price>
-            </TextContainer>
-          </Col>
-        </Row>
-      </Card>
-    </Col>
-  );
-};
+export default props => (
+  <Col xs={6} sm={4} md={3}>
+    <Card>
+      <Image
+        src={props.picSrc}
+        srcSet={props.picSrc2x}
+        alt="image experiense"
+      />
+      <Row start="xs" top="xs">
+        <Col xs>
+          <TextContainer>
+            <Place>{props.place}</Place>
+          </TextContainer>
+        </Col>
+      </Row>
+      <Row start="xs" top="xs">
+        <Col xs>
+          <TextContainer>
+            <Name>{props.title}</Name>
+          </TextContainer>
+        </Col>
+      </Row>
+      <Row start="xs">
+        <Col xs>
+          <TextContainer>
+            <Price>About ${props.price} per person</Price>
+          </TextContainer>
+        </Col>
+      </Row>
+    </Card>
+  </Col>
+);

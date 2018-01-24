@@ -1,11 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import DayPicker, { DateUtils } from "react-day-picker";
-import "react-day-picker/lib/style.css";
-import "./dayPicker.css";
-import close from "./close1.svg";
-import arrow from "../../arrow-calendar.svg";
-import moment from "moment";
+import React from 'react';
+import styled from 'styled-components';
+import moment from 'moment';
+import DayPicker, { DateUtils } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
+import './dayPicker.css';
+import close from './close1.svg';
+import arrow from '../../arrow-calendar.svg';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -21,8 +21,8 @@ const BtnModal = styled.button`
   font-size: 0.875rem;
   margin: 12px 11px 12px 0;
 
-  color: ${props => (props.isOpen ? "#fff" : "#383838")};
-  background: ${props => (props.isOpen ? "#008489" : "transparent")};
+  color: ${props => (props.isOpen ? '#fff' : '#383838')};
+  background: ${props => (props.isOpen ? '#008489' : 'transparent')};
 `;
 
 const Overlay = styled.div`
@@ -161,7 +161,7 @@ const Reset = styled.button`
 `;
 
 const CheckIn = styled.button`
-  font-family: "CircularLight", sans-serif;
+  font-family: 'CircularLight', sans-serif;
   padding: 0 0 6px 0;
   font-size: 1.125rem;
   border: none;
@@ -195,58 +195,39 @@ const HeaderModal = styled.div`
   }
 `;
 
-const getLabelCheckIn = startDate => {
-  if (startDate) {
-    return `${moment(startDate).format("MMM D")}`;
-  } else {
-    return "Check-in";
-  }
-};
+const getLabelCheckIn = startDate =>
+  (startDate ? `${moment(startDate).format('MMM D')}` : 'Check-in');
 
-const getLabelCheckOut = endDate => {
-  if (endDate) {
-    return `${moment(endDate).format("MMM D")}`;
-  } else {
-    return "Check-out";
-  }
-};
+const getLabelCheckOut = endDate => (endDate ? `${moment(endDate).format('MMM D')}` : 'Check-out');
 
 const formatDateLabel = (startDate, endDate) => {
-  const formattedStart = moment(startDate).format("MMM D");
-  const formattedEnd = moment(endDate).format("MMM D");
-  const formattedDayEnd = moment(endDate).format("D");
+  const formattedStart = moment(startDate).format('MMM D');
+  const formattedEnd = moment(endDate).format('MMM D');
+  const formattedDayEnd = moment(endDate).format('D');
 
   if ((startDate, endDate)) {
     if (startDate.getMonth() === endDate.getMonth()) {
       return `${formattedStart} - ${formattedDayEnd}`;
-    } else {
-      return `${formattedStart} - ${formattedEnd}`;
     }
-  } else {
-    return "Dates";
+    return `${formattedStart} - ${formattedEnd}`;
   }
+  return 'Dates';
 };
 
 const monthsNumber = () => {
-  if (window.matchMedia("(min-width: 768px)").matches) return 2;
-  if (window.matchMedia("(min-width: 575px)").matches) return 1;
+  if (window.matchMedia('(min-width: 768px)').matches) return 2;
+  if (window.matchMedia('(min-width: 575px)').matches) return 1;
   return 12;
 };
 
 export default class Dates extends React.Component {
   state = {
     from: null,
-    to: null
+    to: null,
   };
 
-  handleDayClick = (day, { disabled, selected }) => {
-    if (disabled) return;
-    const range = DateUtils.addDayToRange(day, this.state);
-
-    this.setState(prevState => {
-      return range;
-    });
-    this.onChange(range.from, range.to);
+  onChange = (from, to) => {
+    this.setState({ from, to });
   };
 
   handleClickOutside = () => {
@@ -255,8 +236,12 @@ export default class Dates extends React.Component {
     this.resetDates(this.state.from, this.state.to);
   };
 
-  onChange = (from, to) => {
-    this.setState({ from, to });
+  handleDayClick = (day, { disabled }) => {
+    if (disabled) return;
+    const range = DateUtils.addDayToRange(day, this.state);
+
+    this.setState(prevState => range);
+    this.onChange(range.from, range.to);
   };
 
   resetDates = (from, to) => {
@@ -309,7 +294,7 @@ export default class Dates extends React.Component {
                 modifiers={modifiers}
                 onDayClick={this.handleDayClick}
                 showWeekDays={false}
-                isOutsideRange={true}
+                isOutsideRange
                 disabledDays={{ before: new Date() }}
               />
 

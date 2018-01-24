@@ -1,11 +1,9 @@
+/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-import './dayPicker.css';
 import close from './../close1.svg';
-import arrow from '../../arrow-calendar.svg';
+import plus from './plus.svg';
+import minus from './minus.svg';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -62,15 +60,13 @@ const Main = styled.div`
     padding: 0;
     box-shadow: 0px 2px 4px rgba(72, 72, 72, 0.08);
   }
-  @media (min-width: 768px) {
-    width: 720px;
-  }
 `;
 
 const FooterMobile = styled.div`
   background: #fff;
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 97%;
   z-index: 102;
   display: flex;
@@ -149,38 +145,16 @@ const Close = styled.button`
   height: 16px;
 `;
 const Text = styled.p`
-  margin: 0;
+  margin: 0 0 14px;
   color: #383838;
   font-size: 0.875rem;
 `;
 const Reset = styled.button`
-  margin: 0;
+  margin: 0 0 14px;
   font-size: 0.875rem;
   border: none;
   background: none;
   color: #0f7276;
-`;
-
-const CheckIn = styled.button`
-  font-family: 'CircularLight', sans-serif;
-  padding: 0 0 6px 0;
-  font-size: 1.125rem;
-  border: none;
-  background: none;
-  color: #636363;
-  margin: 40px 16px 16px;
-  color: #008489;
-  border-bottom: 1px solid #008489;
-`;
-
-const WeekdayContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 300px;
-  margin: 0 auto;
-`;
-const WeekDay = styled.p`
-  font-size: 0.75rem;
 `;
 
 const HeaderModal = styled.div`
@@ -195,109 +169,136 @@ const HeaderModal = styled.div`
     display: none;
   }
 `;
-
-const getLabelCheckIn = startDate =>
-  (startDate ? `${moment(startDate).format('MMM D')}` : 'Check-in');
-
-const getLabelCheckOut = endDate => (endDate ? `${moment(endDate).format('MMM D')}` : 'Check-out');
-
-const formatDateLabel = (startDate, endDate) => {
-  const formattedStart = moment(startDate).format('MMM D');
-  const formattedEnd = moment(endDate).format('MMM D');
-  const formattedDayEnd = moment(endDate).format('D');
-
-  if ((startDate, endDate)) {
-    if (startDate.getMonth() === endDate.getMonth()) {
-      return `${formattedStart} - ${formattedDayEnd}`;
-    }
-    return `${formattedStart} - ${formattedEnd}`;
+const CounterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 16px;
+  &:first-child {
+    margin-top: 30px;
   }
-  return 'Dates';
-};
+  &:last-child {
+    margin-bottom: 30px;
+  }
+`;
 
-const monthsNumber = () => {
-  if (window.matchMedia('(min-width: 768px)').matches) return 2;
-  if (window.matchMedia('(min-width: 575px)').matches) return 1;
-  return 12;
-};
+const TextContainer = styled.div`
+  margin-left: 8px;
+`;
+const Label = styled.p`
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  color: #383838;
+`;
+const SubLabel = styled.p`
+  margin: 0;
+  font-family: 'CircularLight';
+  font-size: 1rem;
+  color: #383838;
+`;
+const Counter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 114px;
+`;
+const Plus = styled.button`
+  background: url(${plus}) no-repeat 50% 50%;
+  box-sizing: border-box;
+  border: 1px solid #008489;
+  border-radius: 22px;
+  width: 32px;
+  height: 32px;
+`;
+
+const Minus = styled(Plus)`
+  opacity: 0.5;
+  background: url(${minus}) no-repeat 50% 50%;
+`;
+const ContedLabel = styled.p`
+  margin: 4px 0;
+  font-family: 'CircularLight';
+  font-size: 1.125rem;
+  color: #383838;
+`;
+
+//const formatGuestLabel = () => {};
 
 export default class Dates extends React.Component {
   state = {
-    from: null,
-    to: null,
+    adults: 0,
+    childrens: 0,
+    infants: 0,
+    isOpen: false,
   };
 
-  onChange = (from, to) => {
-    this.setState({ from, to });
+  openModal = () => {
+    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+  };
+
+  onChange = human => {
+    this.setState({ adults, childrens, infants });
   };
 
   handleClickOutside = () => {
-    this.props.openModal();
+    this.openModal();
 
-    this.resetDates(this.state.from, this.state.to);
+    this.resetGuests;
   };
 
-  handleDayClick = (day, { disabled }) => {
-    if (disabled) return;
-    const range = DateUtils.addDayToRange(day, this.state);
-
-    this.setState(() => range);
-    this.onChange(range.from, range.to);
-  };
-
-  resetDates = () => {
-    this.setState({ from: null, to: null });
-  };
-
-  saveDates = () => {
-    this.props.saveDates(this.state.from, this.state.to);
-
-    this.props.openModal();
+  resetGuests = () => {
+    this.setState({ adults: 0, childrens: 0, infants: 0 });
   };
 
   render() {
-    const { from, to } = this.state;
-    const modifiers = { start: from, end: to };
     return (
       <BtnContainer>
-        <BtnModal isOpen={this.props.isOpen} onClick={this.props.openModal}>
-          {formatDateLabel(this.state.from, this.state.to)}
+        <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
+          Guests
         </BtnModal>
-        {this.props.isOpen && (
+        {this.state.isOpen && (
           <div>
             <HeaderModal>
               <Wrapper>
                 <Close onClick={this.handleClickOutside} />
-                <Text>Dates</Text>
-                <Reset onClick={this.resetDates}>Reset</Reset>
+                <Text>Guests</Text>
+                <Reset onClick={this.resetGuests}>Reset</Reset>
               </Wrapper>
-
-              <CheckIn>{getLabelCheckIn(this.state.from)}</CheckIn>
-              <img src={arrow} alt="arrow" />
-              <CheckIn>{getLabelCheckOut(this.state.to)}</CheckIn>
-
-              <WeekdayContainer>
-                <WeekDay>Su</WeekDay>
-                <WeekDay>Mo</WeekDay>
-                <WeekDay>Tu</WeekDay>
-                <WeekDay>We</WeekDay>
-                <WeekDay>Th</WeekDay>
-                <WeekDay>Fr</WeekDay>
-                <WeekDay>Sa</WeekDay>
-              </WeekdayContainer>
             </HeaderModal>
-
             <Main>
-              <DayPicker
-                className="Selectable"
-                numberOfMonths={monthsNumber()}
-                selectedDays={[from, { from, to }]}
-                modifiers={modifiers}
-                onDayClick={this.handleDayClick}
-                showWeekDays={false}
-                isOutsideRange
-                disabledDays={{ before: new Date() }}
-              />
+              <CounterContainer>
+                <TextContainer>
+                  <Label>Adults</Label>
+                </TextContainer>
+                <Counter>
+                  <Minus />
+                  <ContedLabel>1+</ContedLabel>
+                  <Plus />
+                </Counter>
+              </CounterContainer>
+
+              <CounterContainer>
+                <TextContainer>
+                  <Label>Children</Label>
+                  <SubLabel>Ages 2 — 12</SubLabel>
+                </TextContainer>
+                <Counter>
+                  <Minus />
+                  <ContedLabel>0+</ContedLabel>
+                  <Plus />
+                </Counter>
+              </CounterContainer>
+
+              <CounterContainer>
+                <TextContainer>
+                  <Label>Infants</Label>
+                  <SubLabel>Under 2</SubLabel>
+                </TextContainer>
+                <Counter>
+                  <Minus />
+                  <ContedLabel>0+</ContedLabel>
+                  <Plus />
+                </Counter>
+              </CounterContainer>
 
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
@@ -310,7 +311,7 @@ export default class Dates extends React.Component {
             </FooterMobile>
           </div>
         )}
-        {this.props.isOpen && <Overlay onClick={this.handleClickOutside} />}
+        {this.state.isOpen && <Overlay onClick={this.handleClickOutside} />}
       </BtnContainer>
     );
   }

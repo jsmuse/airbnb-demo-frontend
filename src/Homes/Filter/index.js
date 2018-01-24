@@ -1,7 +1,9 @@
+/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Dates from './Dates/Dates';
+import Guests from './Guests/Guests';
 
 const Button = styled.button`
   display: inline-block;
@@ -59,12 +61,12 @@ export default class Filters extends React.Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  /* saveDates = (startDate, endDate) => {
+  saveDates = (startDate, endDate) => {
     this.setState({
       startDate,
       endDate,
     });
-  }; */
+  };
 
   render() {
     return (
@@ -78,7 +80,7 @@ export default class Filters extends React.Component {
                   openModal={this.openModal}
                   isOpen={this.state.isOpen}
                 />
-                <Button>Guests</Button>
+                <Guests />
                 <HiddenBtn>Room type</HiddenBtn>
                 <HiddenBtn>Price</HiddenBtn>
                 <HiddenBtn>Instant book</HiddenBtn>

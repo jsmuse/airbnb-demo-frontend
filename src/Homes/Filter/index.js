@@ -51,20 +51,20 @@ const Filter = styled.div`
 export default class Filters extends React.Component {
   state = {
     isOpen: false,
-    startDate: null,
-    endDate: null,
+    // startDate: null,
+    // endDate: null,
   };
 
   openModal = () => {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  saveDates = (startDate, endDate) => {
+  /* saveDates = (startDate, endDate) => {
     this.setState({
       startDate,
       endDate,
     });
-  };
+  }; */
 
   render() {
     return (

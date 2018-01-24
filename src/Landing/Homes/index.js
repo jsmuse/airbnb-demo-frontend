@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import arrow from '../../Homes/Shape.svg';
 import Card from '../../Homes/Card';
@@ -12,7 +13,6 @@ import image2 from '../../Homes/Rectangle2.png';
 import image22x from '../../Homes/Rectangle2@2x.png';
 import image3 from '../../Homes/Rectangle3.png';
 import image32x from '../../Homes/Rectangle3@2x.png';
-import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   position: relative;
@@ -45,7 +45,7 @@ export default () => (
         </Col>
         <Col xs>
           <BtnAll to="/homes">
-              See all <Arrow src={arrow} alt="Arrow" />
+            See all <Arrow src={arrow} alt="Arrow" />
           </BtnAll>
         </Col>
       </Row>

@@ -16,11 +16,12 @@
     }
   },
   "rules": {
-    "react/props-types": false,
+    "react/prop-types": "off",
     "jsx-a11y/anchor-is-valid": false,
     "react/jsx-filename-extension": "off",
     "no-unused-vars": "error",
     "no-var": "error",
-    "fp/no-let": "error"
+    "fp/no-let": "error",
+    "spaced-comment": "warn"
   }
 }

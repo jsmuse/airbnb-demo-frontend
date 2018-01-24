@@ -4,7 +4,7 @@ import moment from 'moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import './dayPicker.css';
-import close from './close1.svg';
+import close from './../close1.svg';
 import arrow from '../../arrow-calendar.svg';
 
 const BtnContainer = styled.div`
@@ -240,11 +240,11 @@ export default class Dates extends React.Component {
     if (disabled) return;
     const range = DateUtils.addDayToRange(day, this.state);
 
-    this.setState(prevState => range);
+    this.setState(() => range);
     this.onChange(range.from, range.to);
   };
 
-  resetDates = (from, to) => {
+  resetDates = () => {
     this.setState({ from: null, to: null });
   };
 

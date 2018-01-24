@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Filter from './Filter/';
 import GoogleMap from './GoogleMap';
@@ -18,7 +19,6 @@ import image52x from './Rectangle5@2x.png';
 import image6 from './Rectangle6.png';
 import image62x from './Rectangle6@2x.png';
 import location from './location.svg';
-import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
   margin-top: 160px;
@@ -163,8 +163,7 @@ export default () => (
                 <Row>
                   <Col xs={12} sm={10} md={12}>
                     <Text>
-                        Enter dates to see full pricing. Additional fees apply.
-                        Taxes may be added.
+                      Enter dates to see full pricing. Additional fees apply. Taxes may be added.
                     </Text>
                   </Col>
                   <Col xs={12} sm={2}>

@@ -15,7 +15,6 @@ const Link = styled.a`
   line-height: 24px;
   font-size: 0.875rem;
   color: #383838;
-  margin-left: 8px;
 `;
 
 export default () => {

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Dates from './Dates/Dates';
 import Guests from './Guests/Guests';
+import Room from './Room/Room';
 
 const Button = styled.button`
   display: inline-block;
@@ -81,7 +82,8 @@ export default class Filters extends React.Component {
                   isOpen={this.state.isOpen}
                 />
                 <Guests />
-                <HiddenBtn>Room type</HiddenBtn>
+                <Room />
+
                 <HiddenBtn>Price</HiddenBtn>
                 <HiddenBtn>Instant book</HiddenBtn>
                 <Button>More filters</Button>

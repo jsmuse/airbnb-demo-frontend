@@ -15,7 +15,7 @@ const Minus = styled.button`
 
 export default class MinusBtn extends React.Component {
   minus = () => {
-    this.props.minusCounter(this.props.field, this.props.value);
+    this.props.minusCounter(this.props.field, this.props.value, this.props.minLimit);
   };
   render() {
     return <Minus onClick={this.minus} />;

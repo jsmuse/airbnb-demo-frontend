@@ -14,7 +14,7 @@ const Plus = styled.button`
 
 export default class PlusBtn extends React.Component {
   plus = () => {
-    this.props.plusCounter(this.props.field, this.props.value, this.props.limit);
+    this.props.plusCounter(this.props.field, this.props.value, this.props.maxLimit);
   };
   render() {
     return <Plus onClick={this.plus} />;

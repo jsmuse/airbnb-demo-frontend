@@ -2,8 +2,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
-import Minus from './MinusBtn';
-import Plus from './PlusBtn';
+import entire from './entire.svg';
+import privat from './privat.svg';
+import shared from './shared.svg';
+import check from './check-on.svg';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -56,7 +58,7 @@ const Main = styled.div`
     top: 53px;
     left: 0;
     height: auto;
-    width: 360px;
+    width: 326px;
     padding: 0;
     box-shadow: 0px 2px 4px rgba(72, 72, 72, 0.08);
   }
@@ -169,63 +171,55 @@ const HeaderModal = styled.div`
     display: none;
   }
 `;
-const CounterContainer = styled.div`
+
+const RoomContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 16px;
-  &:first-child {
-    margin-top: 30px;
-  }
-  &:last-child {
-    margin-bottom: 30px;
-  }
+  padding: 16px;
+  margin: 8px 0;
 `;
-
-const TextContainer = styled.div`
-  margin-left: 8px;
+const TextContainer = styled.label`
+  display: flex;
 `;
 const Label = styled.p`
-  margin: 0 0 6px;
-  font-size: 1.25rem;
+  margin: 0 0 6px 0;
+  font-size: 1rem;
   color: #383838;
+  font-family: 'CircularLight';
 `;
 const SubLabel = styled.p`
   margin: 0;
   font-family: 'CircularLight';
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: #383838;
+  max-width: 195px;
 `;
-const Counter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-width: 114px;
-`;
-
-const ContedLabel = styled.p`
-  margin: 4px 0;
-  font-family: 'CircularLight';
-  font-size: 1.125rem;
-  color: #383838;
-`;
-
-const formatGuestLabel = (adults, childrens, infants) => {
-  const total = adults + childrens;
-  if (total > 1) {
-    if (infants > 0) {
-      return total + ' guests, ' + infants + ' infants';
-    }
-    return total + ' guests';
-  } else {
-    return 'Guests';
+const Checkbox = styled.input`
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(72, 72, 72, 0.3);
+  border-radius: 4px;
+  appearance: none;
+  margin-right: 12px;
+  &:checked {
+    border: none;
+    background: url(${check}) no-repeat 50% 50%;
+    background-color: #008489;
   }
+`;
+const Icon = styled.img``;
+
+const formatRoomLabel = (entire, privat, shared) => {
+  //доделать
+  return 'Room type';
 };
 
 export default class Dates extends React.Component {
   state = {
-    adults: 1,
-    childrens: 0,
-    infants: 0,
+    entire: false,
+    privat: false,
+    shared: false,
     isOpen: false,
   };
 
@@ -240,26 +234,22 @@ export default class Dates extends React.Component {
   handleClickOutside = () => {
     this.openModal();
 
-    this.resetGuests;
+    this.resetRooms;
   };
 
-  resetGuests = () => {
-    this.setState({ adults: 0, childrens: 0, infants: 0 });
-  };
-
-  plusCounter = (field, value, maxLimit) => {
-    if (value < maxLimit ? this.setState({ [field]: ++value }) : 0);
-  };
-
-  minusCounter = (field, value, minLimit) => {
-    if (value > minLimit ? this.setState({ [field]: --value }) : 0);
+  resetRooms = () => {
+    this.setState({
+      entire: false,
+      privat: false,
+      shared: false,
+    });
   };
 
   render() {
     return (
       <BtnContainer>
         <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
-          {formatGuestLabel(this.state.adults, this.state.childrens, this.state.infants)}
+          {formatRoomLabel(this.state.entire, this.state.privat, this.state.shared)}
         </BtnModal>
         {this.state.isOpen && (
           <div>
@@ -267,75 +257,42 @@ export default class Dates extends React.Component {
               <Wrapper>
                 <Close onClick={this.handleClickOutside} />
                 <Text>Guests</Text>
-                <Reset onClick={this.resetGuests}>Reset</Reset>
+                <Reset onClick={this.resetRooms}>Reset</Reset>
               </Wrapper>
             </HeaderModal>
             <Main>
-              <CounterContainer>
-                <TextContainer>
-                  <Label>Adults</Label>
+              <RoomContainer>
+                <TextContainer for="entire">
+                  <Checkbox type="checkbox" id="entire" name="entire" value={this.state.entire} />
+                  <div>
+                    <Label>Entire home</Label>
+                    <SubLabel>Have a place to yourself</SubLabel>
+                  </div>
                 </TextContainer>
-                <Counter>
-                  <Minus
-                    minusCounter={this.minusCounter}
-                    value={this.state.adults}
-                    field={'adults'}
-                    minLimit={1}
-                  />
-                  <ContedLabel>{this.state.adults}+</ContedLabel>
-                  <Plus
-                    value={this.state.adults}
-                    field={'adults'}
-                    plusCounter={this.plusCounter}
-                    maxLimit={16}
-                  />
-                </Counter>
-              </CounterContainer>
+                <Icon src={entire} />
+              </RoomContainer>
 
-              <CounterContainer>
-                <TextContainer>
-                  <Label>Children</Label>
-                  <SubLabel>Ages 2 — 12</SubLabel>
+              <RoomContainer>
+                <TextContainer for="privat">
+                  <Checkbox type="checkbox" id="privat" name="privat" value={this.state.privat} />
+                  <div>
+                    <Label>Private room</Label>
+                    <SubLabel>Have your own room and share some common spaces</SubLabel>
+                  </div>
                 </TextContainer>
-                <Counter>
-                  <Minus
-                    minusCounter={this.minusCounter}
-                    value={this.state.childrens}
-                    field={'childrens'}
-                    minLimit={0}
-                  />
-                  <ContedLabel>{this.state.childrens}+</ContedLabel>
-                  <Plus
-                    value={this.state.childrens}
-                    field={'childrens'}
-                    plusCounter={this.plusCounter}
-                    maxLimit={5}
-                  />
-                </Counter>
-              </CounterContainer>
+                <Icon src={privat} />
+              </RoomContainer>
 
-              <CounterContainer>
-                <TextContainer>
-                  <Label>Infants</Label>
-                  <SubLabel>Under 2</SubLabel>
+              <RoomContainer>
+                <TextContainer for="shared">
+                  <Checkbox type="checkbox" id="shared" name="shared" value={this.state.shared} />
+                  <div>
+                    <Label>Shared room</Label>
+                    <SubLabel>Stay in a shared space, like a common room</SubLabel>
+                  </div>
                 </TextContainer>
-                <Counter>
-                  <Minus
-                    minusCounter={this.minusCounter}
-                    value={this.state.infants}
-                    field={'infants'}
-                    minLimit={0}
-                  />
-                  <ContedLabel>{this.state.infants}+</ContedLabel>
-                  <Plus
-                    value={this.state.infants}
-                    field={'infants'}
-                    plusCounter={this.plusCounter}
-                    maxLimit={5}
-                  />
-                </Counter>
-              </CounterContainer>
-
+                <Icon src={shared} />
+              </RoomContainer>
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
                 <BtnApply onClick={this.saveDates}>Apply</BtnApply>

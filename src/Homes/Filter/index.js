@@ -5,6 +5,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import Dates from './Dates/Dates';
 import Guests from './Guests/Guests';
 import Room from './Room/Room';
+import InstantBook from './InstantBook/InstantBook';
 
 const Button = styled.button`
   display: inline-block;
@@ -83,9 +84,9 @@ export default class Filters extends React.Component {
                 />
                 <Guests />
                 <Room />
+                <InstantBook />
 
                 <HiddenBtn>Price</HiddenBtn>
-                <HiddenBtn>Instant book</HiddenBtn>
                 <Button>More filters</Button>
               </Col>
             </Row>

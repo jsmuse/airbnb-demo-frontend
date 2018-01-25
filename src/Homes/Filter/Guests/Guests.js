@@ -2,8 +2,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
-import plus from './plus.svg';
-import minus from './minus.svg';
+import Minus from './MinusBtn';
+import Plus from './PlusBtn';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -201,19 +201,7 @@ const Counter = styled.div`
   align-items: center;
   min-width: 114px;
 `;
-const Plus = styled.button`
-  background: url(${plus}) no-repeat 50% 50%;
-  box-sizing: border-box;
-  border: 1px solid #008489;
-  border-radius: 22px;
-  width: 32px;
-  height: 32px;
-`;
 
-const Minus = styled(Plus)`
-  opacity: 0.5;
-  background: url(${minus}) no-repeat 50% 50%;
-`;
 const ContedLabel = styled.p`
   margin: 4px 0;
   font-family: 'CircularLight';
@@ -225,7 +213,7 @@ const ContedLabel = styled.p`
 
 export default class Dates extends React.Component {
   state = {
-    adults: 0,
+    adults: 2,
     childrens: 0,
     infants: 0,
     isOpen: false,
@@ -235,7 +223,7 @@ export default class Dates extends React.Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  onChange = human => {
+  onChange = (adults, childrens, infants) => {
     this.setState({ adults, childrens, infants });
   };
 
@@ -247,6 +235,18 @@ export default class Dates extends React.Component {
 
   resetGuests = () => {
     this.setState({ adults: 0, childrens: 0, infants: 0 });
+  };
+
+  labelCount = () => {
+    console.log(this.state);
+  };
+
+  plusCounter = (field, value, limit) => {
+    if (value < limit ? this.setState({ [field]: ++value }) : 0);
+  };
+
+  minusCounter = (field, value) => {
+    if (value > 0 ? this.setState({ [field]: --value }) : 0);
   };
 
   render() {
@@ -270,9 +270,18 @@ export default class Dates extends React.Component {
                   <Label>Adults</Label>
                 </TextContainer>
                 <Counter>
-                  <Minus />
-                  <ContedLabel>1+</ContedLabel>
-                  <Plus />
+                  <Minus
+                    minusCounter={this.minusCounter}
+                    value={this.state.adults}
+                    field={'adults'}
+                  />
+                  <ContedLabel>{this.state.adults}</ContedLabel>
+                  <Plus
+                    value={this.state.adults}
+                    field={'adults'}
+                    plusCounter={this.plusCounter}
+                    limit={16}
+                  />
                 </Counter>
               </CounterContainer>
 

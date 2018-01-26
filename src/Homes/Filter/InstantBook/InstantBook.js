@@ -232,6 +232,11 @@ export default class Dates extends React.Component {
     isOpen: false,
   };
 
+  onChange = () => {
+    this.setState(prevState => ({ book: !prevState.book }));
+    console.log(this.state);
+  };
+
   openModal = () => {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
@@ -274,7 +279,7 @@ export default class Dates extends React.Component {
                   <Label>Instant Book</Label>
                   <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
                 </div>
-                <SwitchInput type="checkbox" value={this.state.book} />
+                <SwitchInput type="checkbox" onChange={this.onChange} />
               </BookContainer>
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>

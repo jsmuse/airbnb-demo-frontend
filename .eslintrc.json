@@ -4,9 +4,7 @@
   "extends": ["airbnb"],
   "env": {
     "browser": true,
-    "commonjs": true,
-    "node": true,
-    "es6": true
+    "commonjs": true
   },
   "parserOptions": {
     "ecmaVersion": 6,

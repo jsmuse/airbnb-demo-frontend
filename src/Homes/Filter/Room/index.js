@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from './../close1.svg';
+import close from './../close.svg';
 import entire from './entire.svg';
 import privat from './privat.svg';
 import shared from './shared.svg';
@@ -21,7 +21,7 @@ const BtnModal = styled.button`
     padding: 7px 16px;
     font-size: 0.875rem;
     margin: 12px 11px 12px 0;
-
+    cursor: pointer;
     color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
     background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
   }
@@ -179,12 +179,15 @@ const RoomContainer = styled.div`
   justify-content: space-between;
   padding: 16px;
   margin: 8px 0;
+  &:nth-child(2) {
+    padding: 0 16px;
+  }
 `;
 const TextContainer = styled.label`
   display: flex;
 `;
 const Label = styled.p`
-  margin: 0 0 6px 0;
+  margin: 3px 0;
   font-size: 1rem;
   color: #383838;
   font-family: 'CircularLight';
@@ -192,7 +195,7 @@ const Label = styled.p`
 const SubLabel = styled.p`
   margin: 0;
   font-family: 'CircularLight';
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: #383838;
   max-width: 195px;
 `;

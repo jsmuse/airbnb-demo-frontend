@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from './../close1.svg';
+import close from './../close.svg';
 import Minus from './MinusBtn';
 import Plus from './PlusBtn';
 
@@ -17,7 +17,7 @@ const BtnModal = styled.button`
   padding: 7px 16px;
   font-size: 0.875rem;
   margin: 12px 11px 12px 0;
-
+  cursor: pointer;
   color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
   background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
 `;
@@ -201,7 +201,7 @@ const Counter = styled.div`
   min-width: 114px;
 `;
 
-const ContedLabel = styled.p`
+const CountedLabel = styled.p`
   margin: 4px 0;
   font-family: 'CircularLight';
   font-size: 1.125rem;
@@ -248,11 +248,15 @@ export default class Dates extends React.Component {
   };
 
   plusCounter = (field, value, maxLimit) => {
-    if (value < maxLimit ? this.setState({ [field]: value + 1 }) : 0);
+    if (value < maxLimit) {
+      this.setState({ [field]: value + 1 });
+    }
   };
 
   minusCounter = (field, value, minLimit) => {
-    if (value > minLimit ? this.setState({ [field]: value - 1 }) : 0);
+    if (value > minLimit) {
+      this.setState({ [field]: value - 1 });
+    }
   };
 
   saveGuests = () => {
@@ -264,11 +268,7 @@ export default class Dates extends React.Component {
   render() {
     return (
       <BtnContainer>
-        <BtnModal
-          isApply={this.state.isApply}
-          isAnyOpen={this.props.isAnyOpen}
-          onClick={this.openModal}
-        >
+        <BtnModal isApply={this.state.isApply} isOpen={this.state.isOpen} onClick={this.openModal}>
           {formatGuestLabel(this.state.adults, this.state.childrens, this.state.infants)}
         </BtnModal>
         {this.state.isOpen && (
@@ -292,7 +292,7 @@ export default class Dates extends React.Component {
                     field="adults"
                     minLimit={1}
                   />
-                  <ContedLabel>{this.state.adults}+</ContedLabel>
+                  <CountedLabel>{this.state.adults}+</CountedLabel>
                   <Plus
                     value={this.state.adults}
                     field="adults"
@@ -314,7 +314,7 @@ export default class Dates extends React.Component {
                     field="childrens"
                     minLimit={0}
                   />
-                  <ContedLabel>{this.state.childrens}+</ContedLabel>
+                  <CountedLabel>{this.state.childrens}+</CountedLabel>
                   <Plus
                     value={this.state.childrens}
                     field="childrens"
@@ -336,7 +336,7 @@ export default class Dates extends React.Component {
                     field="infants"
                     minLimit={0}
                   />
-                  <ContedLabel>{this.state.infants}+</ContedLabel>
+                  <CountedLabel>{this.state.infants}+</CountedLabel>
                   <Plus
                     value={this.state.infants}
                     field="infants"

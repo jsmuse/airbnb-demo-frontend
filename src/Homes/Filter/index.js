@@ -8,7 +8,7 @@ import InstantBook from './InstantBook';
 
 const Filter = styled.div`
   position: fixed;
-  top: 82px;
+  top: 83px;
   width: 100%;
   z-index: 1;
   background: #fff;

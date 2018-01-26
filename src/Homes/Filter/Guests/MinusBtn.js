@@ -12,11 +12,6 @@ const Minus = styled.button`
   background: url(${minus}) no-repeat 50% 50%;
 `;
 
-export default class MinusBtn extends React.Component {
-  minus = () => {
-    this.props.minusCounter(this.props.field, this.props.value, this.props.minLimit);
-  };
-  render() {
-    return <Minus onClick={this.minus} />;
-  }
+export default function MinusBtn(props) {
+  return <Minus onClick={() => props.minusCounter(props.field, props.value, props.minLimit)} />;
 }

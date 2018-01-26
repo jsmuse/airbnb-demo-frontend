@@ -11,11 +11,6 @@ const Plus = styled.button`
   height: 32px;
 `;
 
-export default class PlusBtn extends React.Component {
-  plus = () => {
-    this.props.plusCounter(this.props.field, this.props.value, this.props.maxLimit);
-  };
-  render() {
-    return <Plus onClick={this.plus} />;
-  }
+export default function PlusBtn(props) {
+  return <Plus onClick={() => props.plusCounter(props.field, props.value, props.maxLimit)} />;
 }

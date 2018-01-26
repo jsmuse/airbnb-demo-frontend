@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from './../close1.svg';
+import close from './../close.svg';
 import check from './check-on.svg';
 import plus from './plus.svg';
 
@@ -19,7 +19,7 @@ const BtnModal = styled.button`
     padding: 7px 16px;
     font-size: 0.875rem;
     margin: 12px 11px 12px 0;
-
+    cursor: pointer;
     color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
     background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
   }

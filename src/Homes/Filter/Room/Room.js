@@ -12,18 +12,18 @@ const BtnContainer = styled.div`
 `;
 
 const BtnModal = styled.button`
-  display: inline-block;
-  border: 1px solid rgba(72, 72, 72, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-  padding: 7px 16px;
-  font-size: 0.875rem;
-  margin: 12px 11px 12px 0;
-
-  color: ${props => (props.isOpen ? '#fff' : '#383838')};
-  background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+  display: none;
   @media (min-width: 768px) {
-    display: none;
+    display: inline-block;
+    border: 1px solid rgba(72, 72, 72, 0.2);
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 7px 16px;
+    font-size: 0.875rem;
+    margin: 12px 11px 12px 0;
+
+    color: ${props => (props.isOpen ? '#fff' : '#383838')};
+    background: ${props => (props.isOpen ? '#008489' : 'transparent')};
   }
 `;
 

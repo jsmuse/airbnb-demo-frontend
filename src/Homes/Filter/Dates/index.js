@@ -21,8 +21,8 @@ const BtnModal = styled.button`
   font-size: 0.875rem;
   margin: 12px 11px 12px 0;
 
-  color: ${props => (props.isOpen ? '#fff' : '#383838')};
-  background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+  color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
+  background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
 `;
 
 const Overlay = styled.div`
@@ -226,6 +226,7 @@ export default class Dates extends React.Component {
     from: null,
     to: null,
     isOpen: false,
+    isApply: false,
   };
 
   onChange = (from, to) => {
@@ -251,13 +252,13 @@ export default class Dates extends React.Component {
   };
 
   resetDates = () => {
-    this.setState({ from: null, to: null });
+    this.setState({ from: null, to: null, isApply: false });
   };
 
   saveDates = () => {
     this.props.saveDates(this.state.from, this.state.to);
-
     this.openModal();
+    this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
 
   render() {
@@ -265,7 +266,7 @@ export default class Dates extends React.Component {
     const modifiers = { start: from, end: to };
     return (
       <BtnContainer>
-        <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
+        <BtnModal isApply={this.state.isApply} isOpen={this.state.isOpen} onClick={this.openModal}>
           {formatDateLabel(this.state.from, this.state.to)}
         </BtnModal>
         {this.state.isOpen && (

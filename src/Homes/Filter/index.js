@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import Dates from './Dates/Dates';
-import Guests from './Guests/Guests';
-import Room from './Room/Room';
-import InstantBook from './InstantBook/InstantBook';
+import Dates from './Dates';
+import Guests from './Guests';
+import Room from './Room';
+import InstantBook from './InstantBook';
 
 const Filter = styled.div`
   position: fixed;

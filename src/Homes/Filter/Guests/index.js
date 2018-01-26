@@ -18,8 +18,8 @@ const BtnModal = styled.button`
   font-size: 0.875rem;
   margin: 12px 11px 12px 0;
 
-  color: ${props => (props.isOpen ? '#fff' : '#383838')};
-  background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+  color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
+  background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
 `;
 
 const Overlay = styled.div`
@@ -225,6 +225,7 @@ export default class Dates extends React.Component {
     childrens: 0,
     infants: 0,
     isOpen: false,
+    isApply: false,
   };
 
   openModal = () => {
@@ -238,7 +239,12 @@ export default class Dates extends React.Component {
   };
 
   resetGuests = () => {
-    this.setState({ adults: 1, childrens: 0, infants: 0 });
+    this.setState({
+      adults: 1,
+      childrens: 0,
+      infants: 0,
+      isApply: false,
+    });
   };
 
   plusCounter = (field, value, maxLimit) => {
@@ -251,14 +257,18 @@ export default class Dates extends React.Component {
 
   saveGuests = () => {
     this.props.saveGuests(this.state.adults, this.state.childrens, this.state.infants);
-
     this.openModal();
+    this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
 
   render() {
     return (
       <BtnContainer>
-        <BtnModal isAnyOpen={this.props.isAnyOpen} onClick={this.openModal}>
+        <BtnModal
+          isApply={this.state.isApply}
+          isAnyOpen={this.props.isAnyOpen}
+          onClick={this.openModal}
+        >
           {formatGuestLabel(this.state.adults, this.state.childrens, this.state.infants)}
         </BtnModal>
         {this.state.isOpen && (

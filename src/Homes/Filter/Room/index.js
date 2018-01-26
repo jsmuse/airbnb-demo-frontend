@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
+import entire from './entire.svg';
+import privat from './privat.svg';
+import shared from './shared.svg';
 import check from './check-on.svg';
-import plus from './plus.svg';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -20,8 +22,8 @@ const BtnModal = styled.button`
     font-size: 0.875rem;
     margin: 12px 11px 12px 0;
 
-    color: ${props => (props.isOpen ? '#fff' : '#383838')};
-    background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+    color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
+    background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
   }
 `;
 
@@ -172,17 +174,20 @@ const HeaderModal = styled.div`
   }
 `;
 
-const BookContainer = styled.div`
+const RoomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 16px;
   margin: 8px 0;
 `;
-
+const TextContainer = styled.label`
+  display: flex;
+`;
 const Label = styled.p`
   margin: 0 0 6px 0;
   font-size: 1rem;
   color: #383838;
+  font-family: 'CircularLight';
 `;
 const SubLabel = styled.p`
   margin: 0;
@@ -191,50 +196,34 @@ const SubLabel = styled.p`
   color: #383838;
   max-width: 195px;
 `;
-
-const SwitchInput = styled.input`
-  appearance: none;
-  width: 64px;
-  height: 40px;
-  background: rgba(72, 72, 72, 0.08);
+const Checkbox = styled.input`
+  width: 24px;
+  height: 24px;
+  transition: background 0.1s ease-in-out;
+  background: #ffffff;
   border: 1px solid rgba(72, 72, 72, 0.3);
-  box-sizing: border-box;
-  border-radius: 24px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  appearance: none;
+  margin-right: 12px;
   &:checked {
-    background: #008489;
-    border: 1px solid rgba(0, 132, 137, 0.3);
-    &:after {
-      left: 24px;
-      background: url(${check}) no-repeat 50% 50% #fff;
-    }
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    width: 40px;
-    height: 40px;
-    background: url(${plus}) no-repeat 50% 50% #fff;
-    border: 1px solid rgba(72, 72, 72, 0.3);
-    box-sizing: border-box;
-    border-radius: 20px;
-    left: -1px;
-    top: -1px;
-    transition: all 0.2s ease-in-out;
+    border: none;
+    background: url(${check}) no-repeat 50% 50%;
+    background-color: #008489;
   }
 `;
+const Icon = styled.img``;
 
 export default class Dates extends React.Component {
   state = {
-    book: false,
+    entire: false,
+    privat: false,
+    shared: false,
     isOpen: false,
+    isApply: false,
   };
 
-  onChange = () => {
-    this.setState(prevState => ({ book: !prevState.book }));
-    console.log(this.state);
+  onChange = (field) => {
+    this.setState(prevState => ({ [field]: !prevState[field] }));
   };
 
   openModal = () => {
@@ -243,26 +232,40 @@ export default class Dates extends React.Component {
 
   handleClickOutside = () => {
     this.openModal();
-
-    this.resetBook();
+    this.resetRooms();
   };
 
-  resetBook = () => {
+  resetRooms = () => {
     this.setState({
-      book: false,
+      entire: false,
+      privat: false,
+      shared: false,
+      isApply: false,
     });
   };
 
-  saveBook = () => {
-    this.props.saveBook(this.state.book);
+  saveRoom = () => {
+    this.props.saveRoom(this.state.entire, this.state.privat, this.state.shared);
     this.openModal();
+    this.setState(prevState => ({ isApply: !prevState.isApply }));
+  };
+
+  formatRoomLabel = (entireType, privatType, sharedType) => {
+    const allTypes = [entireType, privatType, sharedType];
+    const trueValue = allTypes.filter(type => type === true);
+
+    if (trueValue.length > 1) return `Room type · ${trueValue.length}`;
+    if (entireType) return 'Entire home';
+    if (privatType) return 'Private room';
+    if (sharedType) return 'Shared room';
+    return 'Room type';
   };
 
   render() {
     return (
       <BtnContainer>
-        <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
-          Instant Book
+        <BtnModal isApply={this.state.isApply} isOpen={this.state.isOpen} onClick={this.openModal}>
+          {this.formatRoomLabel(this.state.entire, this.state.privat, this.state.shared)}
         </BtnModal>
         {this.state.isOpen && (
           <div>
@@ -270,25 +273,68 @@ export default class Dates extends React.Component {
               <Wrapper>
                 <Close onClick={this.handleClickOutside} />
                 <Text>Guests</Text>
-                <Reset onClick={this.resetBook}>Reset</Reset>
+                <Reset onClick={this.resetRooms}>Reset</Reset>
               </Wrapper>
             </HeaderModal>
             <Main>
-              <BookContainer>
-                <div>
-                  <Label>Instant Book</Label>
-                  <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
-                </div>
-                <SwitchInput type="checkbox" onChange={this.onChange} />
-              </BookContainer>
+              <RoomContainer>
+                <TextContainer for="entire">
+                  <Checkbox
+                    type="checkbox"
+                    id="entire"
+                    name="entire"
+                    checked={this.state.entire}
+                    onChange={() => this.onChange('entire')}
+                  />
+                  <div>
+                    <Label>Entire home</Label>
+                    <SubLabel>Have a place to yourself</SubLabel>
+                  </div>
+                </TextContainer>
+                <Icon src={entire} />
+              </RoomContainer>
+
+              <RoomContainer>
+                <TextContainer for="privat">
+                  <Checkbox
+                    type="checkbox"
+                    id="privat"
+                    name="privat"
+                    checked={this.state.privat}
+                    onChange={() => this.onChange('privat')}
+                  />
+                  <div>
+                    <Label>Private room</Label>
+                    <SubLabel>Have your own room and share some common spaces</SubLabel>
+                  </div>
+                </TextContainer>
+                <Icon src={privat} />
+              </RoomContainer>
+
+              <RoomContainer>
+                <TextContainer for="shared">
+                  <Checkbox
+                    type="checkbox"
+                    id="shared"
+                    name="shared"
+                    checked={this.state.shared}
+                    onChange={() => this.onChange('shared')}
+                  />
+                  <div>
+                    <Label>Shared room</Label>
+                    <SubLabel>Stay in a shared space, like a common room</SubLabel>
+                  </div>
+                </TextContainer>
+                <Icon src={shared} />
+              </RoomContainer>
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
-                <BtnApply onClick={this.saveBook}>Apply</BtnApply>
+                <BtnApply onClick={this.saveRoom}>Apply</BtnApply>
               </Footer>
             </Main>
 
             <FooterMobile>
-              <SaveBtn onClick={this.saveBook}>Save</SaveBtn>
+              <SaveBtn onClick={this.saveRoom}>Save</SaveBtn>
             </FooterMobile>
           </div>
         )}

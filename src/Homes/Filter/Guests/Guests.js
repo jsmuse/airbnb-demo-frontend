@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
@@ -213,12 +212,11 @@ const formatGuestLabel = (adults, childrens, infants) => {
   const total = adults + childrens;
   if (total > 1) {
     if (infants > 0) {
-      return total + ' guests, ' + infants + ' infants';
+      return `${total} guests, ${infants} infants`;
     }
-    return total + ' guests';
-  } else {
-    return 'Guests';
+    return `${total} guests`;
   }
+  return 'Guests';
 };
 
 export default class Dates extends React.Component {
@@ -233,32 +231,34 @@ export default class Dates extends React.Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  onChange = (adults, childrens, infants) => {
-    this.setState({ adults, childrens, infants });
-  };
-
   handleClickOutside = () => {
     this.openModal();
 
-    this.resetGuests;
+    this.resetGuests();
   };
 
   resetGuests = () => {
-    this.setState({ adults: 0, childrens: 0, infants: 0 });
+    this.setState({ adults: 1, childrens: 0, infants: 0 });
   };
 
   plusCounter = (field, value, maxLimit) => {
-    if (value < maxLimit ? this.setState({ [field]: ++value }) : 0);
+    if (value < maxLimit ? this.setState({ [field]: value + 1 }) : 0);
   };
 
   minusCounter = (field, value, minLimit) => {
-    if (value > minLimit ? this.setState({ [field]: --value }) : 0);
+    if (value > minLimit ? this.setState({ [field]: value - 1 }) : 0);
+  };
+
+  saveGuests = () => {
+    this.props.saveGuests(this.state.adults, this.state.childrens, this.state.infants);
+
+    this.openModal();
   };
 
   render() {
     return (
       <BtnContainer>
-        <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
+        <BtnModal isAnyOpen={this.props.isAnyOpen} onClick={this.openModal}>
           {formatGuestLabel(this.state.adults, this.state.childrens, this.state.infants)}
         </BtnModal>
         {this.state.isOpen && (
@@ -279,13 +279,13 @@ export default class Dates extends React.Component {
                   <Minus
                     minusCounter={this.minusCounter}
                     value={this.state.adults}
-                    field={'adults'}
+                    field="adults"
                     minLimit={1}
                   />
                   <ContedLabel>{this.state.adults}+</ContedLabel>
                   <Plus
                     value={this.state.adults}
-                    field={'adults'}
+                    field="adults"
                     plusCounter={this.plusCounter}
                     maxLimit={16}
                   />
@@ -301,13 +301,13 @@ export default class Dates extends React.Component {
                   <Minus
                     minusCounter={this.minusCounter}
                     value={this.state.childrens}
-                    field={'childrens'}
+                    field="childrens"
                     minLimit={0}
                   />
                   <ContedLabel>{this.state.childrens}+</ContedLabel>
                   <Plus
                     value={this.state.childrens}
-                    field={'childrens'}
+                    field="childrens"
                     plusCounter={this.plusCounter}
                     maxLimit={5}
                   />
@@ -323,13 +323,13 @@ export default class Dates extends React.Component {
                   <Minus
                     minusCounter={this.minusCounter}
                     value={this.state.infants}
-                    field={'infants'}
+                    field="infants"
                     minLimit={0}
                   />
                   <ContedLabel>{this.state.infants}+</ContedLabel>
                   <Plus
                     value={this.state.infants}
-                    field={'infants'}
+                    field="infants"
                     plusCounter={this.plusCounter}
                     maxLimit={5}
                   />
@@ -338,12 +338,12 @@ export default class Dates extends React.Component {
 
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
-                <BtnApply onClick={this.saveDates}>Apply</BtnApply>
+                <BtnApply onClick={this.saveGuests}>Apply</BtnApply>
               </Footer>
             </Main>
 
             <FooterMobile>
-              <SaveBtn onClick={this.saveDates}>Save</SaveBtn>
+              <SaveBtn onClick={this.saveGuests}>Save</SaveBtn>
             </FooterMobile>
           </div>
         )}

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
@@ -21,6 +20,9 @@ const BtnModal = styled.button`
 
   color: ${props => (props.isOpen ? '#fff' : '#383838')};
   background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const Overlay = styled.div`
@@ -176,9 +178,7 @@ const BookContainer = styled.div`
   padding: 16px;
   margin: 8px 0;
 `;
-const TextContainer = styled.label`
-  display: flex;
-`;
+
 const Label = styled.p`
   margin: 0 0 6px 0;
   font-size: 1rem;
@@ -226,11 +226,6 @@ const SwitchInput = styled.input`
   }
 `;
 
-const formatRoomLabel = (entire, privat, shared) => {
-  //доделать
-  return 'Room type';
-};
-
 export default class Dates extends React.Component {
   state = {
     book: false,
@@ -241,20 +236,21 @@ export default class Dates extends React.Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  onChange = book => {
-    this.setState({ book });
-  };
-
   handleClickOutside = () => {
     this.openModal();
 
-    this.resetBook;
+    this.resetBook();
   };
 
   resetBook = () => {
     this.setState({
       book: false,
     });
+  };
+
+  saveBook = () => {
+    this.props.saveBook(this.state.book);
+    this.openModal();
   };
 
   render() {
@@ -282,12 +278,12 @@ export default class Dates extends React.Component {
               </BookContainer>
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
-                <BtnApply onClick={this.saveDates}>Apply</BtnApply>
+                <BtnApply onClick={this.saveBook}>Apply</BtnApply>
               </Footer>
             </Main>
 
             <FooterMobile>
-              <SaveBtn onClick={this.saveDates}>Save</SaveBtn>
+              <SaveBtn onClick={this.saveBook}>Save</SaveBtn>
             </FooterMobile>
           </div>
         )}

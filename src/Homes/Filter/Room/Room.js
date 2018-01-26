@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import close from './../close1.svg';
@@ -23,6 +22,9 @@ const BtnModal = styled.button`
 
   color: ${props => (props.isOpen ? '#fff' : '#383838')};
   background: ${props => (props.isOpen ? '#008489' : 'transparent')};
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const Overlay = styled.div`
@@ -210,10 +212,7 @@ const Checkbox = styled.input`
 `;
 const Icon = styled.img``;
 
-const formatRoomLabel = (entire, privat, shared) => {
-  //доделать
-  return 'Room type';
-};
+const formatRoomLabel = () => 'Room type';
 
 export default class Dates extends React.Component {
   state = {
@@ -227,14 +226,10 @@ export default class Dates extends React.Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  onChange = (adults, childrens, infants) => {
-    this.setState({ adults, childrens, infants });
-  };
-
   handleClickOutside = () => {
     this.openModal();
 
-    this.resetRooms;
+    this.resetRooms();
   };
 
   resetRooms = () => {
@@ -243,6 +238,11 @@ export default class Dates extends React.Component {
       privat: false,
       shared: false,
     });
+  };
+
+  saveRoom = () => {
+    this.props.saveRoom(this.state.entire, this.state.privat, this.state.shared);
+    this.openModal();
   };
 
   render() {
@@ -295,12 +295,12 @@ export default class Dates extends React.Component {
               </RoomContainer>
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
-                <BtnApply onClick={this.saveDates}>Apply</BtnApply>
+                <BtnApply onClick={this.saveRoom}>Apply</BtnApply>
               </Footer>
             </Main>
 
             <FooterMobile>
-              <SaveBtn onClick={this.saveDates}>Save</SaveBtn>
+              <SaveBtn onClick={this.saveRoom}>Save</SaveBtn>
             </FooterMobile>
           </div>
         )}

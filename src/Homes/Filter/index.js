@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import styled from 'styled-components';
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -6,42 +5,6 @@ import Dates from './Dates/Dates';
 import Guests from './Guests/Guests';
 import Room from './Room/Room';
 import InstantBook from './InstantBook/InstantBook';
-
-const Button = styled.button`
-  display: inline-block;
-  border: 1px solid rgba(72, 72, 72, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-  padding: 7px 16px;
-  font-size: 0.875rem;
-  margin: 12px 11px 12px 0;
-  &:hover {
-    background: #f2f2f2;
-    border-color: #f2f2f2;
-  }
-  &:focus {
-    background: #008489;
-    color: #ffffff;
-    border-color: #008489;
-  }
-`;
-
-const HiddenBtn = styled.button`
-  display: none;
-  &:hover {
-    background: #f2f2f2;
-    border-color: #f2f2f2;
-  }
-  @media (min-width: 768px) {
-    display: inline-block;
-    border: 1px solid rgba(72, 72, 72, 0.2);
-    box-sizing: border-box;
-    border-radius: 4px;
-    padding: 7px 16px;
-    font-size: 0.875rem;
-    margin: 12px 11px 12px 0;
-  }
-`;
 
 const Filter = styled.div`
   position: fixed;
@@ -54,19 +17,43 @@ const Filter = styled.div`
 
 export default class Filters extends React.Component {
   state = {
-    isOpen: false,
-    // startDate: null,
-    // endDate: null,
-  };
-
-  openModal = () => {
-    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+    startDate: null,
+    endDate: null,
+    adults: 1,
+    childrens: 0,
+    infants: 0,
+    entire: false,
+    privat: false,
+    shared: false,
+    book: false,
   };
 
   saveDates = (startDate, endDate) => {
     this.setState({
       startDate,
       endDate,
+    });
+  };
+
+  saveGuests = (adults, childrens, infants) => {
+    this.setState({
+      adults,
+      childrens,
+      infants,
+    });
+  };
+
+  saveRoom = (entire, privat, shared) => {
+    this.setState({
+      entire,
+      privat,
+      shared,
+    });
+  };
+
+  saveBook = (book) => {
+    this.setState({
+      book,
     });
   };
 
@@ -79,15 +66,22 @@ export default class Filters extends React.Component {
               <Col xs={12} lg={8}>
                 <Dates
                   saveDates={this.saveDates}
-                  openModal={this.openModal}
-                  isOpen={this.state.isOpen}
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
                 />
-                <Guests />
-                <Room />
-                <InstantBook />
-
-                <HiddenBtn>Price</HiddenBtn>
-                <Button>More filters</Button>
+                <Guests
+                  adults={this.state.adults}
+                  childrens={this.state.childrens}
+                  infants={this.state.infants}
+                  saveGuests={this.saveGuests}
+                />
+                <Room
+                  saveRoom={this.saveRoom}
+                  entire={this.state.entire}
+                  privat={this.state.privat}
+                  shared={this.state.shared}
+                />
+                <InstantBook saveBook={this.saveBook} book={this.state.book} />
               </Col>
             </Row>
           </Grid>

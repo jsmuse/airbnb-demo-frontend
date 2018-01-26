@@ -225,14 +225,19 @@ export default class Dates extends React.Component {
   state = {
     from: null,
     to: null,
+    isOpen: false,
   };
 
   onChange = (from, to) => {
     this.setState({ from, to });
   };
 
+  openModal = () => {
+    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+  };
+
   handleClickOutside = () => {
-    this.props.openModal();
+    this.openModal();
 
     this.resetDates(this.state.from, this.state.to);
   };
@@ -252,7 +257,7 @@ export default class Dates extends React.Component {
   saveDates = () => {
     this.props.saveDates(this.state.from, this.state.to);
 
-    this.props.openModal();
+    this.openModal();
   };
 
   render() {
@@ -260,10 +265,10 @@ export default class Dates extends React.Component {
     const modifiers = { start: from, end: to };
     return (
       <BtnContainer>
-        <BtnModal isOpen={this.props.isOpen} onClick={this.props.openModal}>
+        <BtnModal isOpen={this.state.isOpen} onClick={this.openModal}>
           {formatDateLabel(this.state.from, this.state.to)}
         </BtnModal>
-        {this.props.isOpen && (
+        {this.state.isOpen && (
           <div>
             <HeaderModal>
               <Wrapper>
@@ -310,7 +315,7 @@ export default class Dates extends React.Component {
             </FooterMobile>
           </div>
         )}
-        {this.props.isOpen && <Overlay onClick={this.handleClickOutside} />}
+        {this.state.isOpen && <Overlay onClick={this.handleClickOutside} />}
       </BtnContainer>
     );
   }

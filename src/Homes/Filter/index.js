@@ -5,6 +5,7 @@ import Dates from './Dates';
 import Guests from './Guests';
 import Room from './Room';
 import InstantBook from './InstantBook';
+import Price from './Price';
 
 const Filter = styled.div`
   position: fixed;
@@ -26,6 +27,8 @@ export default class Filters extends React.Component {
     privat: false,
     shared: false,
     book: false,
+    min: 1,
+    max: 40,
   };
 
   saveDates = (startDate, endDate) => {
@@ -57,6 +60,13 @@ export default class Filters extends React.Component {
     });
   };
 
+  savePrice = (min, max) => {
+    this.setState({
+      min,
+      max,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -81,6 +91,7 @@ export default class Filters extends React.Component {
                   privat={this.state.privat}
                   shared={this.state.shared}
                 />
+                <Price savePrice={this.savePrice} min={this.state.min} max={this.state.max} />
                 <InstantBook saveBook={this.saveBook} book={this.state.book} />
               </Col>
             </Row>

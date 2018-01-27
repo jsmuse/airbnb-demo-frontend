@@ -214,8 +214,11 @@ const HistogramLine = styled.div`
   height: ${props => `${props.height}px`};
   background: #d8d8d8;
 `;
-const formatPriceLabel = (max) => {
-  if (max < 40) return `Up to $${max}`;
+
+const formatPriceLabel = (min, max) => {
+  if (min > 1 && max < 40) return `$${min} — $${max}`;
+  if (max < 40) return `To $${max}`;
+  if (min > 1) return `From $${max}`;
   return 'Price';
 };
 
@@ -225,8 +228,7 @@ const HistogramLines = props => (
   </React.Fragment>
 );
 
-const formatPriceTitle = (minValue, maxValue) =>
-  `$${minValue} — $${maxValue}${maxValue >= 40 ? '+' : ''}`;
+const formatPriceTitle = (min, max) => `$${min} — $${max}${max >= 40 ? '+' : ''}`;
 
 export default class Price extends React.Component {
   state = {
@@ -258,7 +260,12 @@ export default class Price extends React.Component {
     });
   };
 
-  updateValue = () => {};
+  updateValue = (sliderState) => {
+    this.setState({
+      min: sliderState.values[0],
+      max: sliderState.values[1],
+    });
+  };
 
   savePrice = () => {
     this.props.savePrice(this.state.min, this.state.max);
@@ -294,7 +301,7 @@ export default class Price extends React.Component {
     return (
       <BtnContainer>
         <BtnModal isApply={this.state.isApply} isOpen={this.state.isOpen} onClick={this.openModal}>
-          {formatPriceLabel(this.state.max)}
+          {formatPriceLabel(this.state.min, this.state.max)}
         </BtnModal>
         {this.state.isOpen && (
           <div>
@@ -314,12 +321,11 @@ export default class Price extends React.Component {
                     <HistogramLines height={arrayPrices} length={arrayPrices.length} />
                   </HistogramLineContainer>
                   <Rheostat
-                    min={this.state.min}
-                    max={this.state.max}
-                    value={() => {
-                      this.updateValue(arrayPrices);
-                    }}
-                    values={[this.state.min, this.state.max]}
+                    min={1}
+                    max={40}
+                    step="1"
+                    onValuesUpdated={this.updateValue}
+                    values={[1, 40]}
                   />
                 </HistogramContainer>
               </PriceContainer>

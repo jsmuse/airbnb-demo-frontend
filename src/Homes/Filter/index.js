@@ -7,6 +7,7 @@ import Room from './Room';
 import InstantBook from './InstantBook';
 import Price from './Price';
 import More from './More';
+// import Dropdown from './Dropdown';
 
 const Filter = styled.div`
   position: fixed;
@@ -19,53 +20,34 @@ const Filter = styled.div`
 
 export default class Filters extends React.Component {
   state = {
-    startDate: null,
-    endDate: null,
-    adults: 1,
-    childrens: 0,
-    infants: 0,
-    entire: false,
-    privat: false,
-    shared: false,
-    book: false,
-    min: 1,
-    max: 40,
+    dates: {
+      startDate: null,
+      endDate: null,
+    },
+    guests: {
+      adults: 1,
+      childrens: 0,
+      infants: 0,
+    },
+    roomType: {
+      entire: false,
+      privat: false,
+      shared: false,
+    },
+    instantBook: {
+      book: false,
+    },
+    price: {
+      min: 1,
+      max: 40,
+    },
   };
 
-  saveDates = (startDate, endDate) => {
-    this.setState({
-      startDate,
-      endDate,
-    });
-  };
-
-  saveGuests = (adults, childrens, infants) => {
-    this.setState({
-      adults,
-      childrens,
-      infants,
-    });
-  };
-
-  saveRoom = (entire, privat, shared) => {
-    this.setState({
-      entire,
-      privat,
-      shared,
-    });
-  };
-
-  saveBook = (book) => {
-    this.setState({
-      book,
-    });
-  };
-
-  savePrice = (min, max) => {
-    this.setState({
-      min,
-      max,
-    });
+  saveData = (obj) => {
+    Object.keys(obj).map(key =>
+      this.setState({
+        [key]: obj[key],
+      }));
   };
 
   render() {
@@ -75,26 +57,19 @@ export default class Filters extends React.Component {
           <Grid>
             <Row start="xs">
               <Col xs={12} lg={8}>
-                <Dates
-                  saveDates={this.saveDates}
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
+                <Dates saveDates={this.saveData} />
+                <Guests saveGuests={this.saveData} />
+                <Room saveRoom={this.saveData} />
+                <Price savePrice={this.saveData} />
+                <InstantBook saveBook={this.saveData} book={this.state.instantBook.book} />
+                <More
+                  saveData={this.saveData}
+                  dates={this.state.dates}
+                  guests={this.state.guests}
+                  roomType={this.state.roomType}
+                  price={this.state.price}
+                  instantBook={this.state.instantBook}
                 />
-                <Guests
-                  adults={this.state.adults}
-                  childrens={this.state.childrens}
-                  infants={this.state.infants}
-                  saveGuests={this.saveGuests}
-                />
-                <Room
-                  saveRoom={this.saveRoom}
-                  entire={this.state.entire}
-                  privat={this.state.privat}
-                  shared={this.state.shared}
-                />
-                <Price savePrice={this.savePrice} min={this.state.min} max={this.state.max} />
-                <InstantBook saveBook={this.saveBook} book={this.state.book} />
-                <More />
               </Col>
             </Row>
           </Grid>

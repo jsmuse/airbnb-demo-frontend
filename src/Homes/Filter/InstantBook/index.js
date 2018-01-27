@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Dropdown from './../Dropdown';
-import check from './check-on.svg';
-import plus from './plus.svg';
+import Switch from './../../../UI/Switch';
 
 const BookContainer = styled.div`
   display: flex;
@@ -24,49 +23,19 @@ const SubLabel = styled.p`
   max-width: 195px;
 `;
 
-const SwitchInput = styled.input`
-  appearance: none;
-  width: 64px;
-  height: 40px;
-  background: rgba(72, 72, 72, 0.08);
-  border: 1px solid rgba(72, 72, 72, 0.3);
-  box-sizing: border-box;
-  border-radius: 24px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  &:checked {
-    background: #008489;
-    border: 1px solid rgba(0, 132, 137, 0.3);
-    &:after {
-      left: 24px;
-      background: url(${check}) no-repeat 50% 50% #fff;
-    }
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    width: 40px;
-    height: 40px;
-    background: url(${plus}) no-repeat 50% 50% #fff;
-    border: 1px solid rgba(72, 72, 72, 0.3);
-    box-sizing: border-box;
-    border-radius: 20px;
-    left: -1px;
-    top: -1px;
-    transition: all 0.2s ease-in-out;
-  }
-`;
-
 export default class Dates extends React.Component {
   state = {
-    book: false,
+    instantBook: {
+      book: false,
+    },
     isOpen: false,
     isApply: false,
   };
 
   onChange = () => {
-    this.setState(prevState => ({ book: !prevState.book }));
+    this.setState(prevState => ({
+      instantBook: { ...this.state.instantBook, book: !prevState.book },
+    }));
   };
 
   openModal = () => {
@@ -81,13 +50,15 @@ export default class Dates extends React.Component {
 
   resetBook = () => {
     this.setState({
-      book: false,
+      instantBook: {
+        book: false,
+      },
       isApply: false,
     });
   };
 
   saveBook = () => {
-    this.props.saveBook(this.state.book);
+    this.props.saveBook(this.state.instantBook);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
@@ -111,7 +82,7 @@ export default class Dates extends React.Component {
             <Label>Instant Book</Label>
             <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
           </div>
-          <SwitchInput type="checkbox" checked={this.state.book} onChange={this.onChange} />
+          <Switch id="book" checked={this.state.instantBook.book} onChange={this.onChange} />
         </BookContainer>
       </Dropdown>
     );

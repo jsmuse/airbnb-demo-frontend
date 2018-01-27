@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Rheostat from 'rheostat';
 import 'rheostat/css/slider.css';
 import 'rheostat/css/slider-horizontal.css';
-import Dropdown from './../Dropdown';
 import './rheostat.css';
+import Dropdown from './../Dropdown';
 
 const MainContainer = styled.div`
   padding: 16px 16px 0;
@@ -66,8 +66,10 @@ export default class Price extends React.Component {
   state = {
     isOpen: false,
     isApply: false,
-    min: 1,
-    max: 40,
+    price: {
+      min: 1,
+      max: 40,
+    },
   };
 
   openModal = () => {
@@ -82,21 +84,25 @@ export default class Price extends React.Component {
 
   resetPrice = () => {
     this.setState({
-      min: 1,
-      max: 40,
+      price: {
+        min: 1,
+        max: 40,
+      },
       isApply: false,
     });
   };
 
   updateValue = (sliderState) => {
     this.setState({
-      min: sliderState.values[0],
-      max: sliderState.values[1],
+      price: {
+        min: sliderState.values[0],
+        max: sliderState.values[1],
+      },
     });
   };
 
   savePrice = () => {
-    this.props.savePrice(this.state.min, this.state.max);
+    this.props.savePrice(this.state.price);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
@@ -128,7 +134,7 @@ export default class Price extends React.Component {
     ];
     return (
       <Dropdown
-        btnLabel={formatPriceLabel(this.state.min, this.state.max)}
+        btnLabel={formatPriceLabel(this.state.price.min, this.state.price.max)}
         mobileTitle="Price"
         handleClickOutside={this.handleClickOutside}
         saveData={this.savePrice}
@@ -140,7 +146,7 @@ export default class Price extends React.Component {
         widthTabletModal="330px"
       >
         <MainContainer>
-          <Label>{formatPriceTitle(this.state.min, this.state.max)}</Label>
+          <Label>{formatPriceTitle(this.state.price.min, this.state.price.max)}</Label>
           <SubLabel>The average nightly price is $75.</SubLabel>
           <HistogramContainer>
             <HistogramLineContainer>

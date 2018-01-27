@@ -58,9 +58,11 @@ const formatGuestLabel = (adults, childrens, infants) => {
 
 export default class Dates extends React.Component {
   state = {
-    adults: 1,
-    childrens: 0,
-    infants: 0,
+    guests: {
+      adults: 1,
+      childrens: 0,
+      infants: 0,
+    },
     isOpen: false,
     isApply: false,
   };
@@ -77,9 +79,11 @@ export default class Dates extends React.Component {
 
   resetGuests = () => {
     this.setState({
-      adults: 1,
-      childrens: 0,
-      infants: 0,
+      guests: {
+        adults: 1,
+        childrens: 0,
+        infants: 0,
+      },
       isApply: false,
       isOpen: false,
     });
@@ -91,18 +95,22 @@ export default class Dates extends React.Component {
 
   plusCounter = (field, value, maxLimit) => {
     if (value < maxLimit) {
-      this.setState({ [field]: value + 1 });
+      this.setState({
+        guests: { ...this.state.guests, [field]: value + 1 },
+      });
     }
   };
 
   minusCounter = (field, value, minLimit) => {
     if (value > minLimit) {
-      this.setState({ [field]: value - 1 });
+      this.setState({
+        guests: { ...this.state.guests, [field]: value - 1 },
+      });
     }
   };
 
   saveGuests = () => {
-    this.props.saveGuests(this.state.adults, this.state.childrens, this.state.infants);
+    this.props.saveGuests(this.state.guests);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
@@ -110,7 +118,11 @@ export default class Dates extends React.Component {
   render() {
     return (
       <Dropdown
-        btnLabel={formatGuestLabel(this.state.adults, this.state.childrens, this.state.infants)}
+        btnLabel={formatGuestLabel(
+          this.state.guests.adults,
+          this.state.guests.childrens,
+          this.state.guests.infants,
+        )}
         mobileTitle="Guests"
         handleClickOutside={this.handleClickOutside}
         saveData={this.saveGuests}
@@ -128,13 +140,13 @@ export default class Dates extends React.Component {
           <Counter>
             <Minus
               minusCounter={this.minusCounter}
-              value={this.state.adults}
+              value={this.state.guests.adults}
               field="adults"
               minLimit={1}
             />
-            <CountedLabel>{this.state.adults}+</CountedLabel>
+            <CountedLabel>{this.state.guests.adults}+</CountedLabel>
             <Plus
-              value={this.state.adults}
+              value={this.state.guests.adults}
               field="adults"
               plusCounter={this.plusCounter}
               maxLimit={16}
@@ -150,13 +162,13 @@ export default class Dates extends React.Component {
           <Counter>
             <Minus
               minusCounter={this.minusCounter}
-              value={this.state.childrens}
+              value={this.state.guests.childrens}
               field="childrens"
               minLimit={0}
             />
-            <CountedLabel>{this.state.childrens}+</CountedLabel>
+            <CountedLabel>{this.state.guests.childrens}+</CountedLabel>
             <Plus
-              value={this.state.childrens}
+              value={this.state.guests.childrens}
               field="childrens"
               plusCounter={this.plusCounter}
               maxLimit={5}
@@ -172,13 +184,13 @@ export default class Dates extends React.Component {
           <Counter>
             <Minus
               minusCounter={this.minusCounter}
-              value={this.state.infants}
+              value={this.state.guests.infants}
               field="infants"
               minLimit={0}
             />
-            <CountedLabel>{this.state.infants}+</CountedLabel>
+            <CountedLabel>{this.state.guests.infants}+</CountedLabel>
             <Plus
-              value={this.state.infants}
+              value={this.state.guests.infants}
               field="infants"
               plusCounter={this.plusCounter}
               maxLimit={5}

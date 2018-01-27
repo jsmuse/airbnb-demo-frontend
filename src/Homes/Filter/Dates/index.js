@@ -95,8 +95,10 @@ const monthsNumber = () => {
 
 export default class Dates extends React.Component {
   state = {
-    from: null,
-    to: null,
+    dates: {
+      from: null,
+      to: null,
+    },
     isOpen: false,
     isApply: false,
   };
@@ -112,7 +114,7 @@ export default class Dates extends React.Component {
   handleClickOutside = () => {
     this.openModal();
 
-    this.resetDates(this.state.from, this.state.to);
+    this.resetDates();
   };
 
   handleDayClick = (day, { disabled }) => {
@@ -124,11 +126,14 @@ export default class Dates extends React.Component {
   };
 
   resetDates = () => {
-    this.setState({ from: null, to: null, isApply: false });
+    this.setState((this.state.dates: {
+        from: null,
+        to: null,
+      }));
   };
 
   saveDates = () => {
-    this.props.saveDates(this.state.from, this.state.to);
+    this.props.saveDates(this.state.dates);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
@@ -156,9 +161,9 @@ export default class Dates extends React.Component {
             <Reset onClick={this.resetDates}>Reset</Reset>
           </Wrapper>
 
-          <CheckIn>{getLabelCheckIn(this.state.from)}</CheckIn>
+          <CheckIn>{getLabelCheckIn(this.state.dates.from)}</CheckIn>
           <img src={arrow} alt="arrow" />
-          <CheckIn>{getLabelCheckOut(this.state.to)}</CheckIn>
+          <CheckIn>{getLabelCheckOut(this.state.dates.to)}</CheckIn>
 
           <WeekdayContainer>
             <WeekDay>Su</WeekDay>

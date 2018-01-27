@@ -4,7 +4,7 @@ import Dropdown from './../Dropdown';
 import entire from './entire.svg';
 import privat from './privat.svg';
 import shared from './shared.svg';
-import check from './check-on.svg';
+import Checkbox from './../../../UI/Checkbox';
 
 const RoomContainer = styled.div`
   display: flex;
@@ -31,34 +31,24 @@ const SubLabel = styled.p`
   color: #383838;
   max-width: 195px;
 `;
-const Checkbox = styled.input`
-  width: 24px;
-  height: 24px;
-  transition: background 0.1s ease-in-out;
-  background: #ffffff;
-  border: 1px solid rgba(72, 72, 72, 0.3);
-  border-radius: 4px;
-  appearance: none;
-  margin-right: 12px;
-  &:checked {
-    border: none;
-    background: url(${check}) no-repeat 50% 50%;
-    background-color: #008489;
-  }
-`;
+
 const Icon = styled.img``;
 
 export default class Dates extends React.Component {
   state = {
-    entire: false,
-    privat: false,
-    shared: false,
+    roomType: {
+      entire: false,
+      privat: false,
+      shared: false,
+    },
     isOpen: false,
     isApply: false,
   };
 
   onChange = (field) => {
-    this.setState(prevState => ({ [field]: !prevState[field] }));
+    this.setState(prevState => ({
+      roomType: { ...this.state.roomType, [field]: !prevState[field] },
+    }));
   };
 
   openModal = () => {
@@ -72,15 +62,17 @@ export default class Dates extends React.Component {
 
   resetRooms = () => {
     this.setState({
-      entire: false,
-      privat: false,
-      shared: false,
+      roomType: {
+        entire: false,
+        privat: false,
+        shared: false,
+      },
       isApply: false,
     });
   };
 
   saveRoom = () => {
-    this.props.saveRoom(this.state.entire, this.state.privat, this.state.shared);
+    this.props.saveRoom(this.state.roomType);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
@@ -99,7 +91,11 @@ export default class Dates extends React.Component {
   render() {
     return (
       <Dropdown
-        btnLabel={this.formatRoomLabel(this.state.entire, this.state.privat, this.state.shared)}
+        btnLabel={this.formatRoomLabel(
+          this.state.roomType.entire,
+          this.state.roomType.privat,
+          this.state.roomType.shared,
+        )}
         mobileTitle="Room types"
         handleClickOutside={this.handleClickOutside}
         saveData={this.saveRoom}
@@ -113,10 +109,9 @@ export default class Dates extends React.Component {
         <RoomContainer>
           <TextContainer for="entire">
             <Checkbox
-              type="checkbox"
               id="entire"
               name="entire"
-              checked={this.state.entire}
+              checked={this.state.roomType.entire}
               onChange={() => this.onChange('entire')}
             />
             <div>
@@ -130,10 +125,9 @@ export default class Dates extends React.Component {
         <RoomContainer>
           <TextContainer for="privat">
             <Checkbox
-              type="checkbox"
               id="privat"
               name="privat"
-              checked={this.state.privat}
+              checked={this.state.roomType.privat}
               onChange={() => this.onChange('privat')}
             />
             <div>
@@ -147,10 +141,9 @@ export default class Dates extends React.Component {
         <RoomContainer>
           <TextContainer for="shared">
             <Checkbox
-              type="checkbox"
               id="shared"
               name="shared"
-              checked={this.state.shared}
+              checked={this.state.roomType.shared}
               onChange={() => this.onChange('shared')}
             />
             <div>

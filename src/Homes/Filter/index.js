@@ -6,6 +6,7 @@ import Guests from './Guests';
 import Room from './Room';
 import InstantBook from './InstantBook';
 import Price from './Price';
+import More from './More';
 
 const Filter = styled.div`
   position: fixed;
@@ -93,6 +94,7 @@ export default class Filters extends React.Component {
                 />
                 <Price savePrice={this.savePrice} min={this.state.min} max={this.state.max} />
                 <InstantBook saveBook={this.saveBook} book={this.state.book} />
+                <More />
               </Col>
             </Row>
           </Grid>

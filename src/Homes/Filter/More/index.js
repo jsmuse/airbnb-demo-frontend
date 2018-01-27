@@ -180,7 +180,6 @@ export default class Price extends React.Component {
               </Wrapper>
             </HeaderModal>
             <Main>
-              <Room />
               <Footer>
                 <BtnCancel onClick={this.handleClickOutside}>Cancel</BtnCancel>
                 <BtnApply onClick={this.savePrice}>Apply</BtnApply>

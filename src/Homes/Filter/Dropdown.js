@@ -18,7 +18,7 @@ const BtnModal = styled.button`
   color: ${props => (props.isOpen || props.isApply ? '#fff' : '#383838')};
   background: ${props => (props.isOpen || props.isApply ? '#008489' : 'transparent')};
   display: ${props => props.isDisplayBtn};
-  @media (min-width: 575px) {
+  @media (min-width: 768px) {
     display: inline-block;
   }
 `;
@@ -51,14 +51,18 @@ const Main = styled.div`
   width: 100%;
   padding: 160px 0 70px;
   box-sizing: border-box;
+
   @media (min-width: 575px) {
     position: absolute;
     top: 53px;
     left: 0;
     height: auto;
-    width: 360px;
+    width: ${props => props.widthTabletModal};
     padding: 0;
     box-shadow: 0px 2px 4px rgba(72, 72, 72, 0.08);
+  }
+  @media (min-width: 768px) {
+    width: ${props => props.widthModal};
   }
 `;
 
@@ -190,7 +194,7 @@ export default props => (
             <Reset onClick={props.resetGuests}>Reset</Reset>
           </Wrapper>
         </HeaderModal>
-        <Main>
+        <Main widthModal={props.widthModal} widthTabletModal={props.widthTabletModal}>
           {props.children}
           <Footer>
             <BtnCancel onClick={props.handleClickOutside}>Cancel</BtnCancel>

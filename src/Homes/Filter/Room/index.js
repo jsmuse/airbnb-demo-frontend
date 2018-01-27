@@ -107,6 +107,8 @@ export default class Dates extends React.Component {
         isApply={this.state.isApply}
         isOpen={this.state.isOpen}
         isDisplayBtn="none"
+        widthModal="330px"
+        widthTabletModal="330px"
       >
         <RoomContainer>
           <TextContainer for="entire">

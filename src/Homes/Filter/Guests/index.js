@@ -16,20 +16,21 @@ const CounterContainer = styled.div`
   }
 `;
 
-const TextContainer = styled.div`
-  margin-left: 8px;
-`;
 const Label = styled.p`
   margin: 0 0 6px;
+  margin-left: 8px;
   font-size: 1.25rem;
   color: #383838;
 `;
+
 const SubLabel = styled.p`
   margin: 0;
+  margin-left: 8px;
   font-family: 'CircularLight';
   font-size: 1rem;
   color: #383838;
 `;
+
 const Counter = styled.div`
   display: flex;
   justify-content: space-between;
@@ -83,9 +84,11 @@ export default class Dates extends React.Component {
       isOpen: false,
     });
   };
+
   openModal = () => {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
+
   plusCounter = (field, value, maxLimit) => {
     if (value < maxLimit) {
       this.setState({ [field]: value + 1 });
@@ -115,11 +118,13 @@ export default class Dates extends React.Component {
         isApply={this.state.isApply}
         isOpen={this.state.isOpen}
         isDisplayBtn="inline-block"
+        widthModal="330px"
+        widthTabletModal="330px"
       >
         <CounterContainer>
-          <TextContainer>
+          <div>
             <Label>Adults</Label>
-          </TextContainer>
+          </div>
           <Counter>
             <Minus
               minusCounter={this.minusCounter}
@@ -138,10 +143,10 @@ export default class Dates extends React.Component {
         </CounterContainer>
 
         <CounterContainer>
-          <TextContainer>
+          <div>
             <Label>Children</Label>
             <SubLabel>Ages 2 — 12</SubLabel>
-          </TextContainer>
+          </div>
           <Counter>
             <Minus
               minusCounter={this.minusCounter}
@@ -160,10 +165,10 @@ export default class Dates extends React.Component {
         </CounterContainer>
 
         <CounterContainer>
-          <TextContainer>
+          <div>
             <Label>Infants</Label>
             <SubLabel>Under 2</SubLabel>
-          </TextContainer>
+          </div>
           <Counter>
             <Minus
               minusCounter={this.minusCounter}

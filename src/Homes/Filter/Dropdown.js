@@ -181,7 +181,9 @@ export default props => (
       isDisplayBtn={props.isDisplayBtn}
       isApply={props.isApply}
       isOpen={props.isOpen}
-      onClick={props.openModal}
+      onClick={() => {
+        props.openModal(props.field);
+      }}
     >
       {props.btnLabel}
     </BtnModal>
@@ -198,15 +200,33 @@ export default props => (
           {props.children}
           <Footer>
             <BtnCancel onClick={props.handleClickOutside}>Cancel</BtnCancel>
-            <BtnApply onClick={props.saveData}>Apply</BtnApply>
+            <BtnApply
+              onClick={() => {
+                props.saveData(props.field, props.value);
+              }}
+            >
+              Apply
+            </BtnApply>
           </Footer>
         </Main>
 
         <FooterMobile>
-          <SaveBtn onClick={props.saveData}>Save</SaveBtn>
+          <SaveBtn
+            onClick={() => {
+              props.saveData(props.field, props.value);
+            }}
+          >
+            Save
+          </SaveBtn>
         </FooterMobile>
       </div>
     )}
-    {props.isOpen && <Overlay onClick={props.handleClickOutside} />}
+    {props.isOpen && (
+      <Overlay
+        onClick={() => {
+          props.handleClickOutside(props.field);
+        }}
+      />
+    )}
   </BtnContainer>
 );

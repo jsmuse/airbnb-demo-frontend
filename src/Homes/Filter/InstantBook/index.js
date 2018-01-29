@@ -58,7 +58,7 @@ export default class Dates extends React.Component {
   };
 
   saveBook = () => {
-    this.props.saveBook(this.state.instantBook);
+    this.props.saveBook('instantBook', this.state.instantBook);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };

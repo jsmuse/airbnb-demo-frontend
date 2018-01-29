@@ -102,7 +102,7 @@ export default class Price extends React.Component {
   };
 
   savePrice = () => {
-    this.props.savePrice(this.state.price);
+    this.props.savePrice('price', this.state.price);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };

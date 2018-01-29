@@ -110,7 +110,7 @@ export default class Dates extends React.Component {
   };
 
   saveGuests = () => {
-    this.props.saveGuests(this.state.guests);
+    this.props.saveGuests('guests', this.state.guests);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };

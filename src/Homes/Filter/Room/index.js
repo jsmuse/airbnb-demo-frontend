@@ -72,7 +72,7 @@ export default class Dates extends React.Component {
   };
 
   saveRoom = () => {
-    this.props.saveRoom(this.state.roomType);
+    this.props.saveRoom('roomType', this.state.roomType);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };

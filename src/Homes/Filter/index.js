@@ -6,7 +6,7 @@ import Guests from './Guests';
 import Room from './Room';
 import InstantBook from './InstantBook';
 import Price from './Price';
-import More from './More';
+// import More from './More';
 // import Dropdown from './Dropdown';
 
 const Filter = styled.div`
@@ -41,13 +41,13 @@ export default class Filters extends React.Component {
       min: 1,
       max: 40,
     },
+    isAnyOpen: false,
   };
 
-  saveData = (obj) => {
-    Object.keys(obj).map(key =>
-      this.setState({
-        [key]: obj[key],
-      }));
+  save = (field, value) => {
+    this.setState({ [field]: value }, () => {
+      console.log(this.state);
+    });
   };
 
   render() {
@@ -57,19 +57,11 @@ export default class Filters extends React.Component {
           <Grid>
             <Row start="xs">
               <Col xs={12} lg={8}>
-                <Dates saveDates={this.saveData} />
-                <Guests saveGuests={this.saveData} />
-                <Room saveRoom={this.saveData} />
-                <Price savePrice={this.saveData} />
-                <InstantBook saveBook={this.saveData} book={this.state.instantBook.book} />
-                <More
-                  saveData={this.saveData}
-                  dates={this.state.dates}
-                  guests={this.state.guests}
-                  roomType={this.state.roomType}
-                  price={this.state.price}
-                  instantBook={this.state.instantBook}
-                />
+                <Dates saveDates={this.save} />
+                <Guests saveGuests={this.save} />
+                <Room saveRoom={this.save} />
+                <Price savePrice={this.save} />
+                <InstantBook saveBook={this.save} />
               </Col>
             </Row>
           </Grid>
@@ -78,3 +70,13 @@ export default class Filters extends React.Component {
     );
   }
 }
+
+// Object.keys(obj).forEach(key =>
+//   this.setState(
+//     {
+//       [key]: obj[key],
+//     },
+//     () => {
+//       console.log(this.state.instantBook);
+//     },
+//   ));

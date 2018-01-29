@@ -104,7 +104,7 @@ export default class Dates extends React.Component {
   };
 
   onChange = (from, to) => {
-    this.setState({ from, to });
+    this.setState({ dates: { ...this.state.dates, from, to } });
   };
 
   openModal = () => {
@@ -113,7 +113,6 @@ export default class Dates extends React.Component {
 
   handleClickOutside = () => {
     this.openModal();
-
     this.resetDates();
   };
 
@@ -133,7 +132,7 @@ export default class Dates extends React.Component {
   };
 
   saveDates = () => {
-    this.props.saveDates(this.state.dates);
+    this.props.saveDates('dates', this.state.dates);
     this.openModal();
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };

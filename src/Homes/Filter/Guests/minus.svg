@@ -1,0 +1,14 @@
+<svg width="10" height="2" viewBox="0 0 10 2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>minus</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-4386 -3650)">
+<g id="minus">
+<g id="Rectangle-path">
+<use xlink:href="#path0_fill" transform="translate(4386.2 3650.2)" fill="#008489"/>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 0.8C 0 0.358172 0.358172 0 0.8 0L 8.8 0C 9.24183 0 9.6 0.358172 9.6 0.8C 9.6 1.24183 9.24183 1.6 8.8 1.6L 0.8 1.6C 0.358172 1.6 0 1.24183 0 0.8Z"/>
+</defs>
+</svg>

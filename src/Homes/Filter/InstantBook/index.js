@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Dropdown from './../Dropdown';
 import Switch from './../../../UI/Switch';
 
 const BookContainer = styled.div`
@@ -22,17 +23,73 @@ const SubLabel = styled.p`
   max-width: 195px;
 `;
 
-export default props => (
-  <BookContainer>
-    <div>
-      <Label>Instant Book</Label>
-      <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
-    </div>
-    <Switch
-      id="book"
-      checked={props.instantBook.book}
-      isApply={props.instantBook.isApply}
-      onChange={props.onChange}
-    />
-  </BookContainer>
-);
+export default class Book extends React.Component {
+  state = {
+    instantBook: {
+      book: false,
+      isOpen: false,
+    },
+
+    isApply: false,
+  };
+
+  onChange = () => {
+    this.setState(prevState => ({
+      instantBook: { ...this.state.instantBook, book: !prevState.book },
+    }));
+  };
+
+  openModal = () => {
+    this.setState(prevState => ({
+      instantBook: { ...this.state.instantBook, isOpen: !prevState.isOpen },
+    }));
+  };
+
+  handleClickOutside = () => {
+    this.openModal();
+    this.resetBook();
+  };
+
+  resetBook = () => {
+    this.setState({
+      instantBook: {
+        book: false,
+        isOpen: false,
+      },
+      isApply: false,
+    });
+  };
+
+  saveBook = () => {
+    this.setState({ instantBook: { ...this.state.instantBook, isOpen: false } }, () => {
+      this.props.save('instantBook', this.state.instantBook);
+    });
+
+    this.setState(prevState => ({ isApply: !prevState.isApply }));
+  };
+
+  render() {
+    return (
+      <Dropdown
+        btnLabel="Instant Book"
+        mobileTitle="Instant Book"
+        handleClickOutside={this.handleClickOutside}
+        saveData={this.saveBook}
+        openModal={this.openModal}
+        isApply={this.state.isApply}
+        isOpen={this.state.instantBook.isOpen}
+        isDisplayBtn="none"
+        widthModal="330px"
+        widthTabletModal="330px"
+      >
+        <BookContainer>
+          <div>
+            <Label>Instant Book</Label>
+            <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
+          </div>
+          <Switch id="book" checked={this.state.instantBook.book} onChange={this.onChange} />
+        </BookContainer>
+      </Dropdown>
+    );
+  }
+}

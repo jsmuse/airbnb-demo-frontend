@@ -13,7 +13,7 @@ const Header = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 0;
+  z-index: 3;
   background: #fff;
   box-shadow: 0px 0.5px 0px rgba(72, 72, 72, 0.3);
 `;

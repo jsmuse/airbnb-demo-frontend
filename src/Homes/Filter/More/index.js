@@ -2,10 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import close from './../close.svg';
-import Room from './../Room';
-import Price from './../Price';
-import Guests from './../Guests';
+import entire from './../Room/entire.svg';
+import privat from './../Room/privat.svg';
+import shared from './../Room/shared.svg';
+import Checkbox from './../../../UI/Checkbox';
 import Switch from './../../../UI/Switch';
+import Histogram from './../../../UI/Histogram';
+import Counter from './../../../UI/Counter';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -57,10 +60,10 @@ const Main = styled.div`
 
   @media (min-width: 992px) {
     position: fixed;
-    top: 141px;
+    top: 139px;
     left: 0;
     width: 66%;
-    height: 100%;
+    height: 85.5%;
     width: ${props => props.widthTabletModal};
     padding: 0;
     box-shadow: 0px 2px 4px rgba(72, 72, 72, 0.08);
@@ -97,7 +100,7 @@ const SaveBtn = styled.button`
 `;
 
 const Footer = styled.div`
-displa
+  display: none;
 `;
 
 const BtnCancel = styled.button`
@@ -158,8 +161,9 @@ const HeaderModal = styled.div`
 const BookContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 16px;
+  padding: 16px 0;
   margin: 8px 0;
+  align-items: center;
 `;
 
 const Label = styled.p`
@@ -173,7 +177,6 @@ const SubLabel = styled.p`
   font-family: 'CircularLight';
   font-size: 0.9rem;
   color: #383838;
-  max-width: 195px;
 `;
 const LearnMore = styled.p`
   color: #0f7276;
@@ -185,7 +188,6 @@ const LearnMore = styled.p`
 const Title = styled.p`
   color: #383838;
   font-size: 1.125rem;
-  margin-left: 8px;
   display: inline-block;
 `;
 const ContainerOther = styled.div`
@@ -209,114 +211,298 @@ const SeeAllSm = styled.button`
   cursor: pointer;
 `;
 
-export default props => (
-  <BtnContainer>
-    <BtnModal
-      isDisplayBtn={props.isDisplayBtn}
-      isApply={props.isApply}
-      isOpen={props.isOpen}
-      onClick={() => {
-        props.openModal(props.field);
-      }}
-    >
-      {props.btnLabel}
-    </BtnModal>
-    {props.isOpen && (
-      <Main>
-        <Grid>
-          <Row>
-            <Col xs={1} />
-            <Col xs={11}>
-              <HeaderModal>
-                <Wrapper>
-                  <Close onClick={props.handleClickOutside} />
-                  <Text>{props.mobileTitle}</Text>
-                  <Reset onClick={props.resetGuests}>Reset</Reset>
-                </Wrapper>
-              </HeaderModal>
-              <Title>Room type</Title>
-              <Room roomType={props.roomType} onChangeRoom={props.onChangeRoom} />
+const RoomContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  margin: 8px 0;
+  &:nth-child(2) {
+    padding: 0 8px;
+  }
+`;
+const TextContainer = styled.label`
+  display: flex;
+`;
+const Icon = styled.img`
+  display: none;
+  @media (min-width: 992px) {
+    display: inline-block;
+  }
+`;
 
-              <Divider />
-              <Title>Price range</Title>
-              <Price
-                price={props.price}
-                formatPriceTitle={props.formatPriceTitle}
-                updateValue={props.updateValue}
-              />
+const CounterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0;
+  &:first-child {
+    margin-top: 30px;
+  }
+  &:last-child {
+    margin-bottom: 30px;
+  }
+`;
 
-              <Divider />
-              <Title>Rooms and beds</Title>
-              <Guests
-                guests={props.guests}
-                plusCounter={props.plusCounter}
-                minusCounter={props.minusCounter}
-              />
+const formatPriceLabel = (min, max) => {
+  if (min > 1 && max < 40) return `$${min} — $${max}`;
+  if (max < 40) return `To $${max}`;
+  if (min > 1) return `From $${max}`;
+  return 'Price';
+};
+const formatPriceTitle = (min, max) => `$${min} — $${max}${max >= 40 ? '+' : ''}`;
 
-              <Divider />
-              <Title>More options</Title>
-              <BookContainer>
-                <div>
-                  <Label>Instant Book</Label>
-                  <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
-                  <LearnMore>Learn more</LearnMore>
-                </div>
-                <Switch
-                  id="book"
-                  checked={props.instantBook.book}
-                  isApply={props.instantBook.isApply}
-                  onChange={props.onChange}
-                />
-              </BookContainer>
-              <BookContainer>
-                <div>
-                  <Label>Superhost</Label>
-                  <SubLabel>Stay with recognized hosts.</SubLabel>
-                  <LearnMore>Learn more</LearnMore>
-                </div>
-                <Switch
-                  id="book2"
-                  checked={props.instantBook.book}
-                  isApply={props.instantBook.isApply}
-                  onChange={props.onChange}
-                />
-              </BookContainer>
+export default class More extends React.Component {
+  state = {
+    isApply: false,
+    price: {
+      min: 1,
+      max: 40,
+    },
+    roomType: {
+      entire: false,
+      privat: false,
+      shared: false,
+      isOpen: false,
+    },
+    guests: {
+      adults: 1,
+      childrens: 0,
+      infants: 0,
+      isOpen: false,
+    },
+    other: {
+      superHost: false,
+      instantBook: false,
+      isOpen: false,
+    },
+  };
 
-              <Divider />
-              <ContainerOther>
-                <Title>Amenities</Title>
-                <SeeAllSm>See all</SeeAllSm>
-              </ContainerOther>
-              <Divider />
-              <ContainerOther>
-                <Title>Facilities</Title>
-                <SeeAllSm>See all</SeeAllSm>
-              </ContainerOther>
+  openModal = () => {
+    this.setState(prevState => ({
+      other: { ...this.state.other, isOpen: !prevState.isOpen },
+    }));
+  };
 
-              <Footer>
-                <SeeHomes>See homes</SeeHomes>
-                <BtnCancel>Cancel</BtnCancel>
-              </Footer>
-              <FooterMobile>
-                <SaveBtn
-                  onClick={() => {
-                    props.saveData(props.field, props.value);
-                  }}
-                >
-                  See homes
-                </SaveBtn>
-              </FooterMobile>
-            </Col>
-          </Row>
-        </Grid>
-      </Main>
-    )}
-    {props.isOpen && (
-      <Overlay
-        onClick={() => {
-          props.handleClickOutside(props.field);
-        }}
-      />
-    )}
-  </BtnContainer>
-);
+  // handleClickOutside = () => {
+  //   this.openModal();
+  //   this.resetPrice();
+  // };
+
+  // resetPrice = () => {
+  //   this.setState({
+  //     price: {
+  //       min: 1,
+  //       max: 40,
+  //       isOpen: false,
+  //     },
+  //     isApply: false,
+  //   });
+  // };
+
+  // updateValue = (sliderState) => {
+  //   this.setState({
+  //     price: {
+  //       ...this.state.price,
+  //       min: sliderState.values[0],
+  //       max: sliderState.values[1],
+  //     },
+  //   });
+  // };
+
+  // savePrice = () => {
+  //   this.setState({ price: { ...this.state.price, isOpen: false } }, () => {
+  //     this.props.save('price', this.state.price);
+  //   });
+
+  //   this.setState(prevState => ({ isApply: !prevState.isApply }));
+  // };
+
+  render() {
+    return (
+      <BtnContainer>
+        <BtnModal
+          isApply={this.state.isApply}
+          isOpen={this.state.other.isOpen}
+          onClick={this.openModal}
+        >
+          More filters
+        </BtnModal>
+        {this.state.other.isOpen && (
+          <Main>
+            <Grid>
+              <Row>
+                <Col md={1} />
+                <Col xs={12} md={11}>
+                  <HeaderModal>
+                    <Wrapper>
+                      <Close onClick={this.handleClickOutside} />
+                      <Text>All filters (0)</Text>
+                      <Reset onClick={this.resetGuests}>Reset</Reset>
+                    </Wrapper>
+                  </HeaderModal>
+                  <Title>Room type</Title>
+                  <RoomContainer>
+                    <TextContainer for="entire">
+                      <Checkbox
+                        id="entire"
+                        name="entire"
+                        checked={this.state.roomType.entire}
+                        onChange={() => this.onChange('entire')}
+                      />
+                      <div>
+                        <Label>Entire home</Label>
+                        <SubLabel>Have a place to yourself</SubLabel>
+                      </div>
+                    </TextContainer>
+                    <Icon src={entire} />
+                  </RoomContainer>
+                  <RoomContainer>
+                    <TextContainer for="privat">
+                      <Checkbox
+                        id="privat"
+                        name="privat"
+                        checked={this.state.roomType.privat}
+                        onChange={() => this.onChange('privat')}
+                      />
+                      <div>
+                        <Label>Private room</Label>
+                        <SubLabel>Have your own room and share some common spaces</SubLabel>
+                      </div>
+                    </TextContainer>
+                    <Icon src={privat} />
+                  </RoomContainer>
+                  <RoomContainer>
+                    <TextContainer for="shared">
+                      <Checkbox
+                        id="shared"
+                        name="shared"
+                        checked={this.state.roomType.shared}
+                        onChange={() => this.onChange('shared')}
+                      />
+                      <div>
+                        <Label>Shared room</Label>
+                        <SubLabel>Stay in a shared space, like a common room</SubLabel>
+                      </div>
+                    </TextContainer>
+                    <Icon src={shared} />
+                  </RoomContainer>
+                  <Divider />
+                  <Title>Price range</Title>
+                  <Label>{formatPriceTitle(this.state.price.min, this.state.price.max)}</Label>
+                  <SubLabel>The average nightly price is $75.</SubLabel>
+                  <Histogram
+                    updateValue={this.updateValue}
+                    min={this.state.price.min}
+                    max={this.state.price.max}
+                  />
+                  <Divider />
+                  <Title>Rooms and beds</Title>
+                  <CounterContainer>
+                    <div>
+                      <Label>Adults</Label>
+                    </div>
+                    <Counter
+                      minusCounter={this.minusCounter}
+                      value={this.state.guests.adults}
+                      field="adults"
+                      minLimit={1}
+                      plusCounter={this.plusCounter}
+                      maxLimit={16}
+                      label={this.state.guests.adults}
+                    />
+                  </CounterContainer>
+                  <CounterContainer>
+                    <div>
+                      <Label>Children</Label>
+                      <SubLabel>Ages 2 — 12</SubLabel>
+                    </div>
+                    <Counter
+                      minusCounter={this.minusCounter}
+                      value={this.state.guests.childrens}
+                      field="childrens"
+                      minLimit={0}
+                      plusCounter={this.plusCounter}
+                      maxLimit={5}
+                      label={this.state.guests.childrens}
+                    />
+                  </CounterContainer>
+                  <CounterContainer>
+                    <div>
+                      <Label>Infants</Label>
+                      <SubLabel>Under 2</SubLabel>
+                    </div>
+                    <Counter
+                      minusCounter={this.minusCounter}
+                      value={this.state.guests.infants}
+                      field="infants"
+                      minLimit={0}
+                      plusCounter={this.plusCounter}
+                      maxLimit={5}
+                      label={this.state.guests.infants}
+                    />
+                  </CounterContainer>
+                  <Divider />
+                  <Title>More options</Title>
+                  <BookContainer>
+                    <div>
+                      <Label>Instant Book</Label>
+                      <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
+                      <LearnMore>Learn more</LearnMore>
+                    </div>
+                    <Switch
+                      id="book"
+                      checked={this.state.other.instantBook}
+                      onChange={this.props.onChange}
+                    />
+                  </BookContainer>
+                  <BookContainer>
+                    <div>
+                      <Label>Superhost</Label>
+                      <SubLabel>Stay with recognized hosts.</SubLabel>
+                      <LearnMore>Learn more</LearnMore>
+                    </div>
+                    <Switch
+                      id="book2"
+                      checked={this.state.other.superHost}
+                      onChange={this.props.onChange}
+                    />
+                  </BookContainer>
+                  <Divider />
+                  <ContainerOther>
+                    <Title>Amenities</Title>
+                    <SeeAllSm>See all</SeeAllSm>
+                  </ContainerOther>
+                  <Divider />
+                  <ContainerOther>
+                    <Title>Facilities</Title>
+                    <SeeAllSm>See all</SeeAllSm>
+                  </ContainerOther>
+
+                  <Footer>
+                    <SeeHomes>See homes</SeeHomes>
+                    <BtnCancel>Cancel</BtnCancel>
+                  </Footer>
+                  <FooterMobile>
+                    <SaveBtn
+                      onClick={() => {
+                        this.props.saveData(this.props.field, this.props.value);
+                      }}
+                    >
+                      See homes
+                    </SaveBtn>
+                  </FooterMobile>
+                </Col>
+              </Row>
+            </Grid>
+          </Main>
+        )}
+        {this.props.isOpen && (
+          <Overlay
+            onClick={() => {
+              this.props.handleClickOutside(this.props.field);
+            }}
+          />
+        )}
+      </BtnContainer>
+    );
+  }
+}

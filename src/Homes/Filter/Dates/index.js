@@ -4,6 +4,7 @@ import moment from 'moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import './dayPicker.css';
+import Dropdown from './../Dropdown';
 import close from './../close.svg';
 import arrow from '../../arrow-calendar.svg';
 
@@ -72,6 +73,20 @@ const getLabelCheckIn = startDate =>
 
 const getLabelCheckOut = endDate => (endDate ? `${moment(endDate).format('MMM D')}` : 'Check-out');
 
+const formatDateLabel = (startDate, endDate) => {
+  const formattedStart = moment(startDate).format('MMM D');
+  const formattedEnd = moment(endDate).format('MMM D');
+  const formattedDayEnd = moment(endDate).format('D');
+
+  if ((startDate, endDate)) {
+    if (startDate.getMonth() === endDate.getMonth()) {
+      return `${formattedStart} - ${formattedDayEnd}`;
+    }
+    return `${formattedStart} - ${formattedEnd}`;
+  }
+  return 'Dates';
+};
+
 const monthsNumber = () => {
   if (window.matchMedia('(min-width: 768px)').matches) return 2;
   if (window.matchMedia('(min-width: 575px)').matches) return 1;
@@ -83,7 +98,9 @@ export default class Dates extends React.Component {
     dates: {
       from: null,
       to: null,
+      isOpen: false,
     },
+    isApply: false,
   };
 
   onChange = (from, to) => {
@@ -91,7 +108,9 @@ export default class Dates extends React.Component {
   };
 
   openModal = () => {
-    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+    this.setState(prevState => ({
+      dates: { ...this.state.dates, isOpen: !prevState.isOpen },
+    }));
   };
 
   handleClickOutside = () => {
@@ -101,22 +120,29 @@ export default class Dates extends React.Component {
 
   handleDayClick = (day, { disabled }) => {
     if (disabled) return;
-    const range = DateUtils.addDayToRange(day, this.state);
+    const range = DateUtils.addDayToRange(day, this.state.dates);
 
     this.setState(() => range);
     this.onChange(range.from, range.to);
   };
 
   resetDates = () => {
-    this.setState((this.state.dates: {
+    this.setState({
+      dates: {
+        ...this.state.dates,
         from: null,
         to: null,
-      }));
+        isOpen: false,
+      },
+      isApply: false,
+    });
   };
 
   saveDates = () => {
-    this.props.saveDates('dates', this.state.dates);
-    this.openModal();
+    this.setState({ dates: { ...this.state.dates, isOpen: false } }, () => {
+      this.props.save('dates', this.state.dates);
+    });
+
     this.setState(prevState => ({ isApply: !prevState.isApply }));
   };
 
@@ -124,7 +150,18 @@ export default class Dates extends React.Component {
     const { from, to } = this.state;
     const modifiers = { start: from, end: to };
     return (
-      <div>
+      <Dropdown
+        btnLabel={formatDateLabel(this.state.dates.from, this.state.dates.to)}
+        mobileTitle="Dates"
+        handleClickOutside={this.handleClickOutside}
+        saveData={this.saveDates}
+        openModal={this.openModal}
+        isApply={this.state.isApply}
+        isOpen={this.state.dates.isOpen}
+        isDisplayBtn="inline-block"
+        widthModal="720px"
+        widthTabletModal="360px"
+      >
         <HeaderModal>
           <Wrapper>
             <Close onClick={this.handleClickOutside} />
@@ -157,7 +194,7 @@ export default class Dates extends React.Component {
           isOutsideRange
           disabledDays={{ before: new Date() }}
         />
-      </div>
+      </Dropdown>
     );
   }
 }

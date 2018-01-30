@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Dropdown from './../Dropdown';
 import entire from './entire.svg';
 import privat from './privat.svg';
 import shared from './shared.svg';
@@ -33,54 +34,137 @@ const SubLabel = styled.p`
 
 const Icon = styled.img``;
 
-export default props => (
-  <div>
-    <RoomContainer>
-      <TextContainer for="entire">
-        <Checkbox
-          id="entire"
-          name="entire"
-          checked={props.roomType.entire}
-          onChange={() => props.onChangeRoom('entire')}
-        />
-        <div>
-          <Label>Entire home</Label>
-          <SubLabel>Have a place to yourself</SubLabel>
-        </div>
-      </TextContainer>
-      <Icon src={entire} />
-    </RoomContainer>
+const formatRoomLabel = (entireType, privatType, sharedType) => {
+  const allTypes = [entireType, privatType, sharedType];
+  const trueValue = allTypes.filter(type => type === true);
 
-    <RoomContainer>
-      <TextContainer for="privat">
-        <Checkbox
-          id="privat"
-          name="privat"
-          checked={props.roomType.privat}
-          onChange={() => props.onChangeRoom('privat')}
-        />
-        <div>
-          <Label>Private room</Label>
-          <SubLabel>Have your own room and share some common spaces</SubLabel>
-        </div>
-      </TextContainer>
-      <Icon src={privat} />
-    </RoomContainer>
+  if (trueValue.length > 1) return `Room type · ${trueValue.length}`;
+  if (entireType) return 'Entire home';
+  if (privatType) return 'Private room';
+  if (sharedType) return 'Shared room';
+  return 'Room type';
+};
 
-    <RoomContainer>
-      <TextContainer for="shared">
-        <Checkbox
-          id="shared"
-          name="shared"
-          checked={props.roomType.shared}
-          onChange={() => props.onChangeRoom('shared')}
-        />
-        <div>
-          <Label>Shared room</Label>
-          <SubLabel>Stay in a shared space, like a common room</SubLabel>
-        </div>
-      </TextContainer>
-      <Icon src={shared} />
-    </RoomContainer>
-  </div>
-);
+export default class Dates extends React.Component {
+  state = {
+    roomType: {
+      entire: false,
+      privat: false,
+      shared: false,
+      isOpen: false,
+    },
+    isApply: false,
+  };
+
+  onChange = (field) => {
+    if (this.state.roomType[field]) {
+      this.setState({
+        roomType: { ...this.state.roomType, [field]: false },
+      });
+    } else {
+      this.setState({
+        roomType: { ...this.state.roomType, [field]: true },
+      });
+    }
+  };
+
+  openModal = () => {
+    this.setState(prevState => ({
+      roomType: { ...this.state.roomType, isOpen: !prevState.isOpen },
+    }));
+  };
+
+  handleClickOutside = () => {
+    this.openModal();
+    this.resetRooms();
+  };
+
+  resetRooms = () => {
+    this.setState({
+      roomType: {
+        entire: false,
+        privat: false,
+        shared: false,
+        isOpen: false,
+      },
+      isApply: false,
+    });
+  };
+
+  saveRoom = () => {
+    this.setState({ roomType: { ...this.state.roomType, isOpen: false } }, () => {
+      this.props.save('price', this.state.roomType);
+    });
+
+    this.setState(prevState => ({ isApply: !prevState.isApply }));
+  };
+
+  render() {
+    return (
+      <Dropdown
+        btnLabel={formatRoomLabel(
+          this.state.roomType.entire,
+          this.state.roomType.privat,
+          this.state.roomType.shared,
+        )}
+        mobileTitle="Room types"
+        handleClickOutside={this.handleClickOutside}
+        saveData={this.saveRoom}
+        openModal={this.openModal}
+        isApply={this.state.isApply}
+        isOpen={this.state.roomType.isOpen}
+        isDisplayBtn="none"
+        widthModal="330px"
+        widthTabletModal="330px"
+      >
+        <RoomContainer>
+          <TextContainer for="entire">
+            <Checkbox
+              id="entire"
+              name="entire"
+              checked={this.state.roomType.entire}
+              onChange={() => this.onChange('entire')}
+            />
+            <div>
+              <Label>Entire home</Label>
+              <SubLabel>Have a place to yourself</SubLabel>
+            </div>
+          </TextContainer>
+          <Icon src={entire} />
+        </RoomContainer>
+
+        <RoomContainer>
+          <TextContainer for="privat">
+            <Checkbox
+              id="privat"
+              name="privat"
+              checked={this.state.roomType.privat}
+              onChange={() => this.onChange('privat')}
+            />
+            <div>
+              <Label>Private room</Label>
+              <SubLabel>Have your own room and share some common spaces</SubLabel>
+            </div>
+          </TextContainer>
+          <Icon src={privat} />
+        </RoomContainer>
+
+        <RoomContainer>
+          <TextContainer for="shared">
+            <Checkbox
+              id="shared"
+              name="shared"
+              checked={this.state.roomType.shared}
+              onChange={() => this.onChange('shared')}
+            />
+            <div>
+              <Label>Shared room</Label>
+              <SubLabel>Stay in a shared space, like a common room</SubLabel>
+            </div>
+          </TextContainer>
+          <Icon src={shared} />
+        </RoomContainer>
+      </Dropdown>
+    );
+  }
+}

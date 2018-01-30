@@ -65,7 +65,13 @@ export default function HistogramMain(props) {
       <HistogramLineContainer>
         <HistogramLines length={arrayPrices.length} height={arrayPrices} />
       </HistogramLineContainer>
-      <Rheostat min={1} max={40} step="1" onValuesUpdated={props.updateValue} values={[1, 40]} />
+      <Rheostat
+        min={1}
+        max={40}
+        step="1"
+        onValuesUpdated={props.updateValue}
+        values={[props.min, props.max]}
+      />
     </HistogramContainer>
   );
 }

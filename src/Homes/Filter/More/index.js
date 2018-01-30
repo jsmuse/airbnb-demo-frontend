@@ -6,7 +6,6 @@ import Room from './../Room';
 import Price from './../Price';
 import Guests from './../Guests';
 import Switch from './../../../UI/Switch';
-import arrow from './arrow.svg';
 
 const BtnContainer = styled.div`
   display: inline-block;
@@ -98,28 +97,25 @@ const SaveBtn = styled.button`
 `;
 
 const Footer = styled.div`
-  display: none;
-  @media (min-width: 575px) {
-    display: flex;
-    justify-content: space-between;
-  }
+displa
 `;
 
 const BtnCancel = styled.button`
-  display: none;
-  @media (min-width: 992px) {
-    display: inline-block;
-    font-size: 1rem;
-    text-align: center;
-    color: #636363;
-    background: #fff;
-    border: none;
-    width: 110px;
-    height: 64px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 1.125rem;
+  color: #383838;
+  background: none;
+  border: none;
+`;
+
+const SeeHomes = styled.button`
+  display: inline-block;
+  padding: 12px 28px;
+  color: #ffffff;
+  font-size: 1.125rem;
+  background: #008489;
+  border-radius: 4px;
 `;
 
 const Wrapper = styled.div`
@@ -298,6 +294,7 @@ export default props => (
               </ContainerOther>
 
               <Footer>
+                <SeeHomes>See homes</SeeHomes>
                 <BtnCancel>Cancel</BtnCancel>
               </Footer>
               <FooterMobile>

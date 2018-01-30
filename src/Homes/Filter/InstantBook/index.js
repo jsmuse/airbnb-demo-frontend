@@ -33,10 +33,16 @@ export default class Book extends React.Component {
     isApply: false,
   };
 
-  onChange = () => {
-    this.setState(prevState => ({
-      instantBook: { ...this.state.instantBook, book: !prevState.book },
-    }));
+  toggleCheckbox = (field) => {
+    if (this.state.instantBook[field]) {
+      this.setState({
+        instantBook: { ...this.state.instantBook, [field]: false },
+      });
+    } else {
+      this.setState({
+        instantBook: { ...this.state.instantBook, [field]: true },
+      });
+    }
   };
 
   openModal = () => {
@@ -87,7 +93,11 @@ export default class Book extends React.Component {
             <Label>Instant Book</Label>
             <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
           </div>
-          <Switch id="book" checked={this.state.instantBook.book} onChange={this.onChange} />
+          <Switch
+            id="book"
+            checked={this.state.instantBook.book}
+            onChange={() => this.toggleCheckbox('book')}
+          />
         </BookContainer>
       </Dropdown>
     );

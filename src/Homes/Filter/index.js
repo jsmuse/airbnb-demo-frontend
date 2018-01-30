@@ -40,6 +40,19 @@ export default class Filters extends React.Component {
       min: 1,
       max: 40,
     },
+    other: {
+      superhost: false,
+      instantBook: false,
+      isOpen: false,
+      heating: false,
+      tv: false,
+      kitchen: false,
+      wifi: false,
+      elebator: false,
+      pool: false,
+      parking: false,
+      wheelchair: false,
+    },
     isAnyOpen: null,
   };
 
@@ -47,6 +60,13 @@ export default class Filters extends React.Component {
     this.setState({ [field]: value }, () => {
       console.log(this.state);
     });
+  };
+
+  saveAll = (obj) => {
+    Object.keys(obj).map(key =>
+      this.setState({
+        [key]: obj[key],
+      }));
   };
 
   render() {
@@ -61,7 +81,7 @@ export default class Filters extends React.Component {
                 <Room save={this.save} />
                 <Price save={this.save} />
                 <InstantBook save={this.save} />
-                <More save={this.save} />
+                <More save={this.saveAll} />
               </Col>
             </Row>
           </Grid>
@@ -70,13 +90,3 @@ export default class Filters extends React.Component {
     );
   }
 }
-
-// Object.keys(obj).forEach(key =>
-//   this.setState(
-//     {
-//       [key]: obj[key],
-//     },
-//     () => {
-//       console.log(this.state.instantBook);
-//     },
-//   ));

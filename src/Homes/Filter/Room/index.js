@@ -51,9 +51,9 @@ export default class Dates extends React.Component {
       entire: false,
       privat: false,
       shared: false,
-      isOpen: false,
     },
     isApply: false,
+    isOpen: false,
   };
 
   onChange = (field) => {
@@ -69,9 +69,26 @@ export default class Dates extends React.Component {
   };
 
   openModal = () => {
-    this.setState(prevState => ({
-      roomType: { ...this.state.roomType, isOpen: !prevState.isOpen },
-    }));
+    if (this.props.openedFilter) {
+      this.props.handleOpen(this.props.id);
+
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+    } else {
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+      if (this.state.isOpen) {
+        this.setState({ isOpen: false }, () => {
+          this.props.handleOpen(null);
+        });
+      }
+    }
   };
 
   handleClickOutside = () => {
@@ -85,18 +102,19 @@ export default class Dates extends React.Component {
         entire: false,
         privat: false,
         shared: false,
-        isOpen: false,
       },
+      isOpen: false,
       isApply: false,
     });
   };
 
   saveRoom = () => {
-    this.setState({ roomType: { ...this.state.roomType, isOpen: false } }, () => {
-      this.props.save('price', this.state.roomType);
+    this.setState({ roomType: { ...this.state.roomType } }, () => {
+      this.props.save('roomType', this.state.roomType);
+      this.props.handleOpen(null);
     });
 
-    this.setState(prevState => ({ isApply: !prevState.isApply }));
+    this.setState({ isApply: true, isOpen: false });
   };
 
   render() {
@@ -112,7 +130,7 @@ export default class Dates extends React.Component {
         saveData={this.saveRoom}
         openModal={this.openModal}
         isApply={this.state.isApply}
-        isOpen={this.state.roomType.isOpen}
+        isOpen={this.state.isOpen && this.props.openedFilter === this.props.id}
         isDisplayBtn="none"
         widthModal="330px"
         widthTabletModal="330px"

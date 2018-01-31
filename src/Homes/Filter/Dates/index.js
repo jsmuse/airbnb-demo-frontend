@@ -98,8 +98,8 @@ export default class Dates extends React.Component {
     dates: {
       from: null,
       to: null,
-      isOpen: false,
     },
+    isOpen: false,
     isApply: false,
   };
 
@@ -108,9 +108,26 @@ export default class Dates extends React.Component {
   };
 
   openModal = () => {
-    this.setState(prevState => ({
-      dates: { ...this.state.dates, isOpen: !prevState.isOpen },
-    }));
+    if (this.props.openedFilter) {
+      this.props.handleOpen(this.props.id);
+
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+    } else {
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+      if (this.state.isOpen) {
+        this.setState({ isOpen: false }, () => {
+          this.props.handleOpen(null);
+        });
+      }
+    }
   };
 
   handleClickOutside = () => {
@@ -127,23 +144,29 @@ export default class Dates extends React.Component {
   };
 
   resetDates = () => {
-    this.setState({
-      dates: {
-        ...this.state.dates,
-        from: null,
-        to: null,
+    this.setState(
+      {
+        dates: {
+          ...this.state.dates,
+          from: null,
+          to: null,
+        },
         isOpen: false,
+        isApply: false,
       },
-      isApply: false,
-    });
+      () => {
+        this.props.handleOpen(null);
+      },
+    );
   };
 
   saveDates = () => {
-    this.setState({ dates: { ...this.state.dates, isOpen: false } }, () => {
+    this.setState({ dates: { ...this.state.dates } }, () => {
       this.props.save('dates', this.state.dates);
+      this.props.handleOpen(null);
     });
 
-    this.setState(prevState => ({ isApply: !prevState.isApply }));
+    this.setState({ isApply: true, isOpen: false });
   };
 
   render() {
@@ -155,9 +178,10 @@ export default class Dates extends React.Component {
         mobileTitle="Dates"
         handleClickOutside={this.handleClickOutside}
         saveData={this.saveDates}
+        reset={this.resetDates}
         openModal={this.openModal}
         isApply={this.state.isApply}
-        isOpen={this.state.dates.isOpen}
+        isOpen={this.state.isOpen && this.props.openedFilter === this.props.id}
         isDisplayBtn="inline-block"
         widthModal="720px"
         widthTabletModal="360px"

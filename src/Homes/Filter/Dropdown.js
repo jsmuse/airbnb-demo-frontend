@@ -191,7 +191,7 @@ export default props => (
           <Wrapper>
             <Close onClick={props.handleClickOutside} />
             <Text>{props.mobileTitle}</Text>
-            <Reset onClick={props.resetGuests}>Reset</Reset>
+            <Reset onClick={props.reset}>Reset</Reset>
           </Wrapper>
         </HeaderModal>
         <Main widthModal={props.widthModal} widthTabletModal={props.widthTabletModal}>

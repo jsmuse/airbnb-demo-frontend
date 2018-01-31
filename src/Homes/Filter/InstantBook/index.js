@@ -27,9 +27,8 @@ export default class Book extends React.Component {
   state = {
     instantBook: {
       book: false,
-      isOpen: false,
     },
-
+    isOpen: false,
     isApply: false,
   };
 
@@ -46,9 +45,26 @@ export default class Book extends React.Component {
   };
 
   openModal = () => {
-    this.setState(prevState => ({
-      instantBook: { ...this.state.instantBook, isOpen: !prevState.isOpen },
-    }));
+    if (this.props.openedFilter) {
+      this.props.handleOpen(this.props.id);
+
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+    } else {
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+      if (this.state.isOpen) {
+        this.setState({ isOpen: false }, () => {
+          this.props.handleOpen(null);
+        });
+      }
+    }
   };
 
   handleClickOutside = () => {
@@ -60,18 +76,19 @@ export default class Book extends React.Component {
     this.setState({
       instantBook: {
         book: false,
-        isOpen: false,
       },
       isApply: false,
+      isOpen: false,
     });
   };
 
   saveBook = () => {
-    this.setState({ instantBook: { ...this.state.instantBook, isOpen: false } }, () => {
+    this.setState({ instantBook: { ...this.state.instantBook } }, () => {
       this.props.save('instantBook', this.state.instantBook);
+      this.props.handleOpen(null);
     });
 
-    this.setState(prevState => ({ isApply: !prevState.isApply }));
+    this.setState({ isApply: true, isOpen: false });
   };
 
   render() {
@@ -83,7 +100,7 @@ export default class Book extends React.Component {
         saveData={this.saveBook}
         openModal={this.openModal}
         isApply={this.state.isApply}
-        isOpen={this.state.instantBook.isOpen}
+        isOpen={this.state.isOpen && this.props.openedFilter === this.props.id}
         isDisplayBtn="none"
         widthModal="330px"
         widthTabletModal="330px"

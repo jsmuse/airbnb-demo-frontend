@@ -12,9 +12,10 @@ const Filter = styled.div`
   position: fixed;
   top: 82px;
   width: 100%;
-  z-index: 1;
+  z-index: 100;
   background: #fff;
-  box-shadow: 0px 0.5px 0px rgba(72, 72, 72, 0.3);
+  border-top: 0.5px solid rgba(72, 72, 72, 0.3);
+  border-bottom: 0.5px solid rgba(72, 72, 72, 0.3);
 `;
 
 export default class Filters extends React.Component {
@@ -41,6 +42,9 @@ export default class Filters extends React.Component {
       max: 40,
     },
     other: {
+      bathrooms: 0,
+      beds: 0,
+      bedrooms: 0,
       superhost: false,
       instantBook: false,
       isOpen: false,
@@ -53,7 +57,7 @@ export default class Filters extends React.Component {
       parking: false,
       wheelchair: false,
     },
-    isAnyOpen: null,
+    openedFilter: null,
   };
 
   save = (field, value) => {
@@ -69,6 +73,10 @@ export default class Filters extends React.Component {
       }));
   };
 
+  openFilter = (key) => {
+    this.setState({ openedFilter: key });
+  };
+
   render() {
     return (
       <div>
@@ -76,12 +84,42 @@ export default class Filters extends React.Component {
           <Grid>
             <Row start="xs">
               <Col xs={12} lg={8}>
-                <Dates save={this.save} />
-                <Guests save={this.save} />
-                <Room save={this.save} />
-                <Price save={this.save} />
-                <InstantBook save={this.save} />
-                <More save={this.saveAll} />
+                <Dates
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="dates"
+                  handleOpen={this.openFilter}
+                />
+                <Guests
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="guests"
+                  handleOpen={this.openFilter}
+                />
+                <Room
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="room"
+                  handleOpen={this.openFilter}
+                />
+                <Price
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="price"
+                  handleOpen={this.openFilter}
+                />
+                <InstantBook
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="instantBook"
+                  handleOpen={this.openFilter}
+                />
+                <More
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="more"
+                  handleOpen={this.openFilter}
+                />
               </Col>
             </Row>
           </Grid>

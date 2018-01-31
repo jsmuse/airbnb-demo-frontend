@@ -229,14 +229,18 @@ const SeeAllSm = styled.button`
 `;
 
 const SeeAllMd = styled.button`
-  font-size: 0.9rem;
-  border: none;
-  background: #fff;
-  background: url(/static/media/arrow.6a783de8.svg) no-repeat 80% 50%;
-  padding: 0 52px 0 0;
-  color: #0f7276;
-  cursor: pointer;
-  margin-top: 16px;
+  display: none;
+  @media (min-width: 992px) {
+    display: block;
+    font-size: 0.9rem;
+    border: none;
+    background: #fff;
+    background: url(/static/media/arrow.6a783de8.svg) no-repeat 80% 50%;
+    padding: 0 52px 0 0;
+    color: #0f7276;
+    cursor: pointer;
+    margin-top: 16px;
+  }
 `;
 
 const RoomContainer = styled.div`
@@ -244,9 +248,6 @@ const RoomContainer = styled.div`
   justify-content: space-between;
   padding: 8px 0;
   margin: 8px 0;
-  &:nth-child(2) {
-    padding: 0 8px;
-  }
 `;
 const TextContainer = styled.label`
   display: flex;
@@ -264,10 +265,7 @@ const Icon = styled.img`
 `;
 
 const HideBlock = styled.div`
-  display: none;
-  @media (min-width: 992px) {
     display: flex;
-  }
 `;
 const Column = styled.div`
   width: 50%;
@@ -298,6 +296,8 @@ export default class More extends React.Component {
   state = {
     isApply: false,
     isOpen: false,
+    isAmenities: false,
+    isFacilities: false,
     price: {
       min: 1,
       max: 40,
@@ -316,6 +316,9 @@ export default class More extends React.Component {
       book: false,
     },
     other: {
+      bathrooms: 0,
+      beds: 0,
+      bedrooms: 0,
       superhost: false,
       heating: false,
       tv: false,
@@ -339,9 +342,26 @@ export default class More extends React.Component {
   };
 
   openModal = () => {
-    this.setState(prevState => ({
-      isOpen: !prevState.isOpen,
-    }));
+    if (this.props.openedFilter) {
+      this.props.handleOpen(this.props.id);
+
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+    } else {
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+      if (this.state.isOpen) {
+        this.setState({ isOpen: false }, () => {
+          this.props.handleOpen(null);
+        });
+      }
+    }
   };
 
   toggleCheckbox = (field, obj) => {
@@ -359,7 +379,7 @@ export default class More extends React.Component {
   plusCounter = (field, value, maxLimit) => {
     if (value < maxLimit) {
       this.setState({
-        guests: { ...this.state.guests, [field]: value + 1 },
+        other: { ...this.state.other, [field]: value + 1 },
       });
     }
   };
@@ -367,7 +387,7 @@ export default class More extends React.Component {
   minusCounter = (field, value, minLimit) => {
     if (value > minLimit) {
       this.setState({
-        guests: { ...this.state.guests, [field]: value - 1 },
+        other: { ...this.state.other, [field]: value - 1 },
       });
     }
   };
@@ -381,44 +401,59 @@ export default class More extends React.Component {
     this.setState({ isOpen: false }, () => {
       const result = this.state;
       this.props.save(result);
+      this.props.handleOpen(null);
     });
 
-    this.setState({ isApply: true });
+    this.setState({ isApply: true, isOpen: false });
+  };
+
+  showAll = (type) => {
+    this.setState({ [type]: true }, () => {
+      console.log(this.state);
+    });
   };
 
   reset = () => {
-    this.setState({
-      isApply: false,
-      isOpen: false,
-      price: {
-        min: 1,
-        max: 40,
+    this.setState(
+      {
+        isApply: false,
+        isOpen: false,
+        price: {
+          min: 1,
+          max: 40,
+        },
+        roomType: {
+          entire: false,
+          privat: false,
+          shared: false,
+        },
+        guests: {
+          adults: 1,
+          childrens: 0,
+          infants: 0,
+        },
+        instantBook: {
+          book: false,
+        },
+        other: {
+          bathrooms: 0,
+          beds: 0,
+          bedrooms: 0,
+          superhost: false,
+          heating: false,
+          tv: false,
+          kitchen: false,
+          wifi: false,
+          elebator: false,
+          pool: false,
+          parking: false,
+          wheelchair: false,
+        },
       },
-      roomType: {
-        entire: false,
-        privat: false,
-        shared: false,
+      () => {
+        console.log(this.state);
       },
-      guests: {
-        adults: 1,
-        childrens: 0,
-        infants: 0,
-      },
-      instantBook: {
-        book: false,
-      },
-      other: {
-        superhost: false,
-        heating: false,
-        tv: false,
-        kitchen: false,
-        wifi: false,
-        elebator: false,
-        pool: false,
-        parking: false,
-        wheelchair: false,
-      },
-    });
+    );
   };
 
   render() {
@@ -427,268 +462,274 @@ export default class More extends React.Component {
         <BtnModal isApply={this.state.isApply} isOpen={this.state.isOpen} onClick={this.openModal}>
           More filters
         </BtnModal>
-        {this.state.isOpen && (
-          <Main>
-            <Grid>
-              <Row>
-                <Col md={1} />
-                <Col xs={12} md={10}>
-                  <HeaderModal>
-                    <Wrapper>
-                      <Close onClick={this.handleClickOutside} />
-                      <Text>All filters (0)</Text>
-                      <Reset onClick={this.reset}>Reset</Reset>
-                    </Wrapper>
-                  </HeaderModal>
-                  <HideContainer>
-                    <Title>Room type</Title>
-                    <RoomContainer>
-                      <TextContainer for="entire">
-                        <Checkbox
-                          id="entire"
-                          checked={this.state.roomType.entire}
-                          onChange={() => this.toggleCheckbox('entire', 'roomType')}
-                        />
-                        <div>
-                          <Label>Entire home</Label>
-                          <SubLabel>Have a place to yourself</SubLabel>
-                        </div>
-                      </TextContainer>
-                      <Icon src={entire} />
-                    </RoomContainer>
-                    <RoomContainer>
-                      <TextContainer for="privat">
-                        <Checkbox
-                          id="privat"
-                          checked={this.state.roomType.privat}
-                          onChange={() => this.toggleCheckbox('privat', 'roomType')}
-                        />
-                        <div>
-                          <Label>Private room</Label>
-                          <SubLabel>Have your own room and share some common spaces</SubLabel>
-                        </div>
-                      </TextContainer>
-                      <Icon src={privat} />
-                    </RoomContainer>
-                    <RoomContainer>
-                      <TextContainer for="shared">
-                        <Checkbox
-                          id="shared"
-                          checked={this.state.roomType.shared}
-                          onChange={() => this.toggleCheckbox('shared', 'roomType')}
-                        />
-                        <div>
-                          <Label>Shared room</Label>
-                          <SubLabel>Stay in a shared space, like a common room</SubLabel>
-                        </div>
-                      </TextContainer>
-                      <Icon src={shared} />
-                    </RoomContainer>
+        {this.state.isOpen &&
+          this.props.openedFilter === this.props.id && (
+            <Main>
+              <Grid>
+                <Row>
+                  <Col md={1} />
+                  <Col xs={12} md={10}>
+                    <HeaderModal>
+                      <Wrapper>
+                        <Close onClick={this.handleClickOutside} />
+                        <Text>All filters (0)</Text>
+                        <Reset onClick={this.reset}>Reset</Reset>
+                      </Wrapper>
+                    </HeaderModal>
+                    <HideContainer>
+                      <Title>Room type</Title>
+                      <RoomContainer>
+                        <TextContainer for="entire">
+                          <Checkbox
+                            id="entire"
+                            checked={this.state.roomType.entire}
+                            onChange={() => this.toggleCheckbox('entire', 'roomType')}
+                          />
+                          <div>
+                            <Label>Entire home</Label>
+                            <SubLabel>Have a place to yourself</SubLabel>
+                          </div>
+                        </TextContainer>
+                        <Icon src={entire} />
+                      </RoomContainer>
+                      <RoomContainer>
+                        <TextContainer for="privat">
+                          <Checkbox
+                            id="privat"
+                            checked={this.state.roomType.privat}
+                            onChange={() => this.toggleCheckbox('privat', 'roomType')}
+                          />
+                          <div>
+                            <Label>Private room</Label>
+                            <SubLabel>Have your own room and share some common spaces</SubLabel>
+                          </div>
+                        </TextContainer>
+                        <Icon src={privat} />
+                      </RoomContainer>
+                      <RoomContainer>
+                        <TextContainer for="shared">
+                          <Checkbox
+                            id="shared"
+                            checked={this.state.roomType.shared}
+                            onChange={() => this.toggleCheckbox('shared', 'roomType')}
+                          />
+                          <div>
+                            <Label>Shared room</Label>
+                            <SubLabel>Stay in a shared space, like a common room</SubLabel>
+                          </div>
+                        </TextContainer>
+                        <Icon src={shared} />
+                      </RoomContainer>
+                      <Divider />
+                      <Title>Price range</Title>
+                      <Label>{formatPriceTitle(this.state.price.min, this.state.price.max)}</Label>
+                      <SubLabel>The average nightly price is $75.</SubLabel>
+                      <Histogram
+                        updateValue={this.updateValue}
+                        min={this.state.price.min}
+                        max={this.state.price.max}
+                      />
+                      <Divider />
+                    </HideContainer>
+
+                    <Title>Rooms and beds</Title>
+                    <CounterContainer>
+                      <div>
+                        <Label>Bedrooms</Label>
+                      </div>
+                      <Counter
+                        minusCounter={this.minusCounter}
+                        value={this.state.other.bedrooms}
+                        field="bedrooms"
+                        minLimit={0}
+                        plusCounter={this.plusCounter}
+                        maxLimit={16}
+                        label={this.state.other.bedrooms}
+                      />
+                    </CounterContainer>
+                    <CounterContainer>
+                      <div>
+                        <Label>Beds</Label>
+                      </div>
+                      <Counter
+                        minusCounter={this.minusCounter}
+                        value={this.state.other.beds}
+                        field="beds"
+                        minLimit={0}
+                        plusCounter={this.plusCounter}
+                        maxLimit={5}
+                        label={this.state.other.beds}
+                      />
+                    </CounterContainer>
+                    <CounterContainer>
+                      <div>
+                        <Label>Bathrooms</Label>
+                      </div>
+                      <Counter
+                        minusCounter={this.minusCounter}
+                        value={this.state.other.bathrooms}
+                        field="bathrooms"
+                        minLimit={0}
+                        plusCounter={this.plusCounter}
+                        maxLimit={5}
+                        label={this.state.other.bathrooms}
+                      />
+                    </CounterContainer>
                     <Divider />
-                    <Title>Price range</Title>
-                    <Label>{formatPriceTitle(this.state.price.min, this.state.price.max)}</Label>
-                    <SubLabel>The average nightly price is $75.</SubLabel>
-                    <Histogram
-                      updateValue={this.updateValue}
-                      min={this.state.price.min}
-                      max={this.state.price.max}
-                    />
+                    <Title>More options</Title>
+                    <BookContainer>
+                      <div>
+                        <Label>Instant Book</Label>
+                        <SubLabel>
+                          Listings you can book without waiting for host approval.
+                        </SubLabel>
+                        <LearnMore>Learn more</LearnMore>
+                      </div>
+                      <Switch
+                        id="book"
+                        checked={this.state.instantBook.book}
+                        onChange={() => {
+                          this.toggleCheckbox('book', 'instantBook');
+                        }}
+                      />
+                    </BookContainer>
+                    <BookContainer>
+                      <div>
+                        <Label>Superhost</Label>
+                        <SubLabel>Stay with recognized hosts.</SubLabel>
+                        <LearnMore>Learn more</LearnMore>
+                      </div>
+                      <Switch
+                        id="superhost"
+                        checked={this.state.other.superhost}
+                        onChange={() => {
+                          this.toggleCheckbox('superhost', 'other');
+                        }}
+                      />
+                    </BookContainer>
                     <Divider />
-                  </HideContainer>
+                    <ContainerOther>
+                      <Title>Amenities</Title>
+                      <SeeAllSm onClick={() => this.showAll('isAmenities')}>See all</SeeAllSm>
+                    </ContainerOther>
 
-                  <Title>Rooms and beds</Title>
-                  <CounterContainer>
-                    <div>
-                      <Label>Adults</Label>
-                    </div>
-                    <Counter
-                      minusCounter={this.minusCounter}
-                      value={this.state.guests.adults}
-                      field="adults"
-                      minLimit={1}
-                      plusCounter={this.plusCounter}
-                      maxLimit={16}
-                      label={this.state.guests.adults}
-                    />
-                  </CounterContainer>
-                  <CounterContainer>
-                    <div>
-                      <Label>Children</Label>
-                      <SubLabel>Ages 2 — 12</SubLabel>
-                    </div>
-                    <Counter
-                      minusCounter={this.minusCounter}
-                      value={this.state.guests.childrens}
-                      field="childrens"
-                      minLimit={0}
-                      plusCounter={this.plusCounter}
-                      maxLimit={5}
-                      label={this.state.guests.childrens}
-                    />
-                  </CounterContainer>
-                  <CounterContainer>
-                    <div>
-                      <Label>Infants</Label>
-                      <SubLabel>Under 2</SubLabel>
-                    </div>
-                    <Counter
-                      minusCounter={this.minusCounter}
-                      value={this.state.guests.infants}
-                      field="infants"
-                      minLimit={0}
-                      plusCounter={this.plusCounter}
-                      maxLimit={5}
-                      label={this.state.guests.infants}
-                    />
-                  </CounterContainer>
-                  <Divider />
-                  <Title>More options</Title>
-                  <BookContainer>
-                    <div>
-                      <Label>Instant Book</Label>
-                      <SubLabel>Listings you can book without waiting for host approval.</SubLabel>
-                      <LearnMore>Learn more</LearnMore>
-                    </div>
-                    <Switch
-                      id="book"
-                      checked={this.state.instantBook.book}
-                      onChange={() => {
-                        this.toggleCheckbox('book', 'instantBook');
-                      }}
-                    />
-                  </BookContainer>
-                  <BookContainer>
-                    <div>
-                      <Label>Superhost</Label>
-                      <SubLabel>Stay with recognized hosts.</SubLabel>
-                      <LearnMore>Learn more</LearnMore>
-                    </div>
-                    <Switch
-                      id="superhost"
-                      checked={this.state.other.superhost}
-                      onChange={() => {
-                        this.toggleCheckbox('superhost', 'other');
-                      }}
-                    />
-                  </BookContainer>
-                  <Divider />
-                  <ContainerOther>
-                    <Title>Amenities</Title>
-                    <SeeAllSm>See all</SeeAllSm>
-                  </ContainerOther>
+                    {this.state.isAmenities && (
+                      <HideBlock>
+                        <Column>
+                          <LabelCheckbox for="heating">
+                            <Checkbox
+                              id="heating"
+                              checked={this.state.other.heating}
+                              onChange={() => this.toggleCheckbox('heating', 'other')}
+                            />
+                            <Label>Heating</Label>
+                          </LabelCheckbox>
 
-                  <HideBlock>
-                    <Column>
-                      <LabelCheckbox for="heating">
-                        <Checkbox
-                          id="heating"
-                          checked={this.state.other.heating}
-                          onChange={() => this.toggleCheckbox('heating', 'other')}
-                        />
-                        <Label>Heating</Label>
-                      </LabelCheckbox>
+                          <LabelCheckbox for="tv">
+                            <Checkbox
+                              id="tv"
+                              checked={this.state.other.tv}
+                              onChange={() => this.toggleCheckbox('tv', 'other')}
+                            />
+                            <Label>TV</Label>
+                          </LabelCheckbox>
+                          <SeeAllMd>See all facilities</SeeAllMd>
+                        </Column>
 
-                      <LabelCheckbox for="tv">
-                        <Checkbox
-                          id="tv"
-                          checked={this.state.other.tv}
-                          onChange={() => this.toggleCheckbox('tv', 'other')}
-                        />
-                        <Label>TV</Label>
-                      </LabelCheckbox>
-                      <SeeAllMd>See all facilities</SeeAllMd>
-                    </Column>
+                        <Column>
+                          <LabelCheckbox for="kitchen">
+                            <Checkbox
+                              id="kitchen"
+                              checked={this.state.other.kitchen}
+                              onChange={() => this.toggleCheckbox('kitchen', 'other')}
+                            />
+                            <Label>Kitchen</Label>
+                          </LabelCheckbox>
 
-                    <Column>
-                      <LabelCheckbox for="kitchen">
-                        <Checkbox
-                          id="kitchen"
-                          checked={this.state.other.kitchen}
-                          onChange={() => this.toggleCheckbox('kitchen', 'other')}
-                        />
-                        <Label>Kitchen</Label>
-                      </LabelCheckbox>
+                          <LabelCheckbox for="wifi">
+                            <Checkbox
+                              id="wifi"
+                              checked={this.state.other.wifi}
+                              onChange={() => this.toggleCheckbox('wifi', 'other')}
+                            />
+                            <Label>Wireless Internet</Label>
+                          </LabelCheckbox>
+                        </Column>
+                      </HideBlock>
+                    )}
 
-                      <LabelCheckbox for="wifi">
-                        <Checkbox
-                          id="wifi"
-                          checked={this.state.other.wifi}
-                          onChange={() => this.toggleCheckbox('wifi', 'other')}
-                        />
-                        <Label>Wireless Internet</Label>
-                      </LabelCheckbox>
-                    </Column>
-                  </HideBlock>
+                    <Divider />
+                    <ContainerOther>
+                      <Title>Facilities</Title>
+                      <SeeAllSm onClick={() => this.showAll('isFacilities')}>See all</SeeAllSm>
+                    </ContainerOther>
+                    {this.state.isFacilities && (
+                      <HideBlock>
+                        <Column>
+                          <LabelCheckbox for="elebator">
+                            <Checkbox
+                              id="elebator"
+                              checked={this.state.other.elebator}
+                              onChange={() => this.toggleCheckbox('elebator', 'other')}
+                            />
+                            <Label>Elebator</Label>
+                          </LabelCheckbox>
 
-                  <Divider />
-                  <ContainerOther>
-                    <Title>Facilities</Title>
-                    <SeeAllSm>See all</SeeAllSm>
-                  </ContainerOther>
-                  <HideBlock>
-                    <Column>
-                      <LabelCheckbox for="elebator">
-                        <Checkbox
-                          id="elebator"
-                          checked={this.state.other.elebator}
-                          onChange={() => this.toggleCheckbox('elebator', 'other')}
-                        />
-                        <Label>Elebator</Label>
-                      </LabelCheckbox>
+                          <LabelCheckbox for="pool">
+                            <Checkbox
+                              id="pool"
+                              checked={this.state.other.pool}
+                              onChange={() => this.toggleCheckbox('pool', 'other')}
+                            />
+                            <Label>Pool</Label>
+                          </LabelCheckbox>
+                          <SeeAllMd>See all facilities</SeeAllMd>
+                        </Column>
 
-                      <LabelCheckbox for="pool">
-                        <Checkbox
-                          id="pool"
-                          checked={this.state.other.pool}
-                          onChange={() => this.toggleCheckbox('pool', 'other')}
-                        />
-                        <Label>Pool</Label>
-                      </LabelCheckbox>
-                      <SeeAllMd>See all facilities</SeeAllMd>
-                    </Column>
+                        <Column>
+                          <LabelCheckbox for="parking">
+                            <Checkbox
+                              id="parking"
+                              checked={this.state.other.parking}
+                              onChange={() => this.toggleCheckbox('parking', 'other')}
+                            />
+                            <Label>Free parking on premises</Label>
+                          </LabelCheckbox>
 
-                    <Column>
-                      <LabelCheckbox for="parking">
-                        <Checkbox
-                          id="parking"
-                          checked={this.state.other.parking}
-                          onChange={() => this.toggleCheckbox('parking', 'other')}
-                        />
-                        <Label>Free parking on premises</Label>
-                      </LabelCheckbox>
+                          <LabelCheckbox for="wheelchair">
+                            <Checkbox
+                              id="wheelchair"
+                              checked={this.state.other.wheelchair}
+                              onChange={() => this.toggleCheckbox('wheelchair', 'other')}
+                            />
+                            <Label>Wheelchair accessible</Label>
+                          </LabelCheckbox>
+                        </Column>
+                      </HideBlock>
+                    )}
+                    <Divider />
 
-                      <LabelCheckbox for="wheelchair">
-                        <Checkbox
-                          id="wheelchair"
-                          checked={this.state.other.wheelchair}
-                          onChange={() => this.toggleCheckbox('wheelchair', 'other')}
-                        />
-                        <Label>Wheelchair accessible</Label>
-                      </LabelCheckbox>
-                    </Column>
-                  </HideBlock>
-                  <Divider />
-
-                  <Footer>
-                    <BtnCancel onClick={this.reset}>Cancel</BtnCancel>
-                    <SeeHomes onClick={this.save}>See homes</SeeHomes>
-                  </Footer>
-                  <FooterMobile>
-                    <SaveBtn onClick={this.save}>See homes</SaveBtn>
-                  </FooterMobile>
-                </Col>
-                <Col md={1} />
-              </Row>
-            </Grid>
-          </Main>
-        )}
-        {this.state.isOpen && (
-          <Overlay
-            onClick={() => {
-              this.handleClickOutside(this.field);
-            }}
-          />
-        )}
+                    <Footer>
+                      <BtnCancel onClick={this.reset}>Cancel</BtnCancel>
+                      <SeeHomes onClick={this.save}>See homes</SeeHomes>
+                    </Footer>
+                    <FooterMobile>
+                      <SaveBtn onClick={this.save}>See homes</SaveBtn>
+                    </FooterMobile>
+                  </Col>
+                  <Col md={1} />
+                </Row>
+              </Grid>
+            </Main>
+          )}
+        {this.state.isOpen &&
+          this.props.openedFilter === this.props.id && (
+            <Overlay
+              onClick={() => {
+                this.handleClickOutside(this.field);
+              }}
+            />
+          )}
       </BtnContainer>
     );
   }

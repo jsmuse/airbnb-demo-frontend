@@ -47,15 +47,32 @@ export default class Dates extends React.Component {
       adults: 1,
       childrens: 0,
       infants: 0,
-      isOpen: false,
     },
+    isOpen: false,
     isApply: false,
   };
 
   openModal = () => {
-    this.setState(prevState => ({
-      guests: { ...this.state.guests, isOpen: !prevState.isOpen },
-    }));
+    if (this.props.openedFilter) {
+      this.props.handleOpen(this.props.id);
+
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+    } else {
+      if (!this.state.isOpen) {
+        this.setState({ isOpen: true }, () => {
+          this.props.handleOpen(this.props.id);
+        });
+      }
+      if (this.state.isOpen) {
+        this.setState({ isOpen: false }, () => {
+          this.props.handleOpen(null);
+        });
+      }
+    }
   };
 
   handleClickOutside = () => {
@@ -64,15 +81,20 @@ export default class Dates extends React.Component {
   };
 
   resetGuests = () => {
-    this.setState({
-      guests: {
-        adults: 1,
-        childrens: 0,
-        infants: 0,
+    this.setState(
+      {
+        guests: {
+          adults: 1,
+          childrens: 0,
+          infants: 0,
+        },
         isOpen: false,
+        isApply: false,
       },
-      isApply: false,
-    });
+      () => {
+        this.props.handleOpen(null);
+      },
+    );
   };
 
   plusCounter = (field, value, maxLimit) => {
@@ -92,11 +114,11 @@ export default class Dates extends React.Component {
   };
 
   saveGuests = () => {
-    this.setState({ guests: { ...this.state.guests, isOpen: false } }, () => {
+    this.setState({ isOpen: false }, () => {
       this.props.save('guests', this.state.guests);
     });
 
-    this.setState(prevState => ({ isApply: !prevState.isApply }));
+    this.setState({ isApply: true, isOpen: false });
   };
 
   render() {
@@ -110,9 +132,10 @@ export default class Dates extends React.Component {
         mobileTitle="Guests"
         handleClickOutside={this.handleClickOutside}
         saveData={this.saveGuests}
+        reset={this.resetGuests}
         openModal={this.openModal}
         isApply={this.state.isApply}
-        isOpen={this.state.guests.isOpen}
+        isOpen={this.state.isOpen && this.props.openedFilter === this.props.id}
         isDisplayBtn="inline-block"
         widthModal="330px"
         widthTabletModal="330px"

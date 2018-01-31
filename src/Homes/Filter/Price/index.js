@@ -93,7 +93,6 @@ export default class Price extends React.Component {
   savePrice = () => {
     this.setState({ price: { ...this.state.price } }, () => {
       this.props.save('price', this.state.price);
-      this.props.handleOpen(null);
     });
 
     this.setState({ isApply: true, isOpen: false });

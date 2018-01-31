@@ -111,7 +111,6 @@ export default class Dates extends React.Component {
   saveRoom = () => {
     this.setState({ roomType: { ...this.state.roomType } }, () => {
       this.props.save('roomType', this.state.roomType);
-      this.props.handleOpen(null);
     });
 
     this.setState({ isApply: true, isOpen: false });

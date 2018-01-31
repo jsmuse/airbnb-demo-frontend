@@ -61,9 +61,7 @@ export default class Filters extends React.Component {
   };
 
   save = (field, value) => {
-    this.setState({ [field]: value }, () => {
-      console.log(this.state);
-    });
+    this.setState({ [field]: value });
   };
 
   saveAll = (obj) => {

@@ -163,7 +163,6 @@ export default class Dates extends React.Component {
   saveDates = () => {
     this.setState({ dates: { ...this.state.dates } }, () => {
       this.props.save('dates', this.state.dates);
-      this.props.handleOpen(null);
     });
 
     this.setState({ isApply: true, isOpen: false });

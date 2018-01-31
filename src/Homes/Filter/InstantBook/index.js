@@ -85,7 +85,6 @@ export default class Book extends React.Component {
   saveBook = () => {
     this.setState({ instantBook: { ...this.state.instantBook } }, () => {
       this.props.save('instantBook', this.state.instantBook);
-      this.props.handleOpen(null);
     });
 
     this.setState({ isApply: true, isOpen: false });

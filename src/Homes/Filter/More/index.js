@@ -401,7 +401,6 @@ export default class More extends React.Component {
     this.setState({ isOpen: false }, () => {
       const result = this.state;
       this.props.save(result);
-      this.props.handleOpen(null);
     });
 
     this.setState({ isApply: true, isOpen: false });

@@ -265,7 +265,7 @@ const Icon = styled.img`
 `;
 
 const HideBlock = styled.div`
-    display: flex;
+  display: flex;
 `;
 const Column = styled.div`
   width: 50%;
@@ -407,52 +407,47 @@ export default class More extends React.Component {
   };
 
   showAll = (type) => {
-    this.setState({ [type]: true }, () => {
-      console.log(this.state);
-    });
+    this.setState({ [type]: true });
   };
 
   reset = () => {
-    this.setState(
-      {
-        isApply: false,
-        isOpen: false,
-        price: {
-          min: 1,
-          max: 40,
-        },
-        roomType: {
-          entire: false,
-          privat: false,
-          shared: false,
-        },
-        guests: {
-          adults: 1,
-          childrens: 0,
-          infants: 0,
-        },
-        instantBook: {
-          book: false,
-        },
-        other: {
-          bathrooms: 0,
-          beds: 0,
-          bedrooms: 0,
-          superhost: false,
-          heating: false,
-          tv: false,
-          kitchen: false,
-          wifi: false,
-          elebator: false,
-          pool: false,
-          parking: false,
-          wheelchair: false,
-        },
+    this.setState({
+      isApply: false,
+      isOpen: false,
+      isAmenities: false,
+      isFacilities: false,
+      price: {
+        min: 1,
+        max: 40,
       },
-      () => {
-        console.log(this.state);
+      roomType: {
+        entire: false,
+        privat: false,
+        shared: false,
       },
-    );
+      guests: {
+        adults: 1,
+        childrens: 0,
+        infants: 0,
+      },
+      instantBook: {
+        book: false,
+      },
+      other: {
+        bathrooms: 0,
+        beds: 0,
+        bedrooms: 0,
+        superhost: false,
+        heating: false,
+        tv: false,
+        kitchen: false,
+        wifi: false,
+        elebator: false,
+        pool: false,
+        parking: false,
+        wheelchair: false,
+      },
+    });
   };
 
   render() {

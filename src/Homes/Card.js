@@ -48,6 +48,14 @@ const Star = styled.img`
   }
 `;
 
+const roomType = {
+  entire_home: 'Entire home',
+  private_room: 'Private room',
+  shared_room: 'Shared room',
+};
+
+const formatBedsCount = quantity => (quantity > 1 ? `${quantity} beds` : `${quantity} bed`);
+
 export default props => (
   <Card>
     <Image src={props.picSrc} srcSet={props.picSrc2x} alt="image experiense" />
@@ -65,7 +73,7 @@ export default props => (
       <Col xs>
         <TextContainer>
           <Options>
-            {props.rentType} · {props.bedsCount} beds
+            {roomType[props.rentType]} · {formatBedsCount(props.bedsCount)}
           </Options>
         </TextContainer>
       </Col>
@@ -79,7 +87,7 @@ export default props => (
           <Star src={star} alt="star" />
           <Star src={star} alt="star" />
           <Owners>
-            {props.reviewsCount} · {props.houseGrade}
+            {props.reviewsCount} {props.houseGrade}
           </Owners>
         </TextContainer>
       </Col>

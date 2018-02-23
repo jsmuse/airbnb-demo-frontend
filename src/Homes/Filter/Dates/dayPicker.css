@@ -43,7 +43,7 @@
   .DayPicker-NavButton--prev {
     display: block;
     margin-right: 76%;
-    background-image: url("./close.svg");
+    background-image: url("./../arrow-back.svg");
   }
   .DayPicker-NavButton {
     display: block;
@@ -56,7 +56,7 @@
 }
 
 .DayPicker-NavButton--next {
-  background-image: url("./close.svg");
+  background-image: url("./../arrow-back.svg");
   transform: rotate(180deg);
 }
 

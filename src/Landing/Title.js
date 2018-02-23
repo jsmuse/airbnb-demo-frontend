@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Title = styled.h2`
   font-size: 2.125rem;
@@ -9,6 +9,4 @@ const Title = styled.h2`
   font-family: "CircularBold", san-serif;
 `;
 
-export default props => {
-  return <Title> {props.children} </Title>;
-};
+export default props => <Title> {props.children} </Title>;

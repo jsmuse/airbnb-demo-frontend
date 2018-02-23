@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Select = styled.select`
   width: 100%;
@@ -10,13 +10,11 @@ const Select = styled.select`
   cursor: pointer;
 `;
 
-export default () => {
-  return (
-    <div>
-      <Select>
-        <option>Пункт 1</option>
-        <option>Пункт 2</option>
-      </Select>
-    </div>
-  );
-};
+export default () => (
+  <div>
+    <Select>
+      <option>Пункт 1</option>
+      <option>Пункт 2</option>
+    </Select>
+  </div>
+);

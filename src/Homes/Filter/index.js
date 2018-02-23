@@ -1,69 +1,78 @@
-import React from "react";
-import styled from "styled-components";
-import { Grid, Row, Col } from "react-flexbox-grid";
-import Dates from "./Dates/Dates";
-
-const Button = styled.button`
-  display: inline-block;
-  border: 1px solid rgba(72, 72, 72, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-  padding: 7px 16px;
-  font-size: 0.875rem;
-  margin: 12px 11px 12px 0;
-  &:hover {
-    background: #f2f2f2;
-    border-color: #f2f2f2;
-  }
-  &:focus {
-    background: #008489;
-    color: #ffffff;
-    border-color: #008489;
-  }
-`;
-
-const HiddenBtn = styled.button`
-  display: none;
-  &:hover {
-    background: #f2f2f2;
-    border-color: #f2f2f2;
-  }
-  @media (min-width: 768px) {
-    display: inline-block;
-    border: 1px solid rgba(72, 72, 72, 0.2);
-    box-sizing: border-box;
-    border-radius: 4px;
-    padding: 7px 16px;
-    font-size: 0.875rem;
-    margin: 12px 11px 12px 0;
-  }
-`;
+import React from 'react';
+import styled from 'styled-components';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import Dates from './Dates';
+import Guests from './Guests';
+import Room from './Room';
+import InstantBook from './InstantBook';
+import Price from './Price';
+import More from './More';
 
 const Filter = styled.div`
   position: fixed;
   top: 82px;
   width: 100%;
-  z-index: 1;
+  z-index: 100;
   background: #fff;
-  box-shadow: 0px 0.5px 0px rgba(72, 72, 72, 0.3);
+  border-top: 0.5px solid rgba(72, 72, 72, 0.3);
+  border-bottom: 0.5px solid rgba(72, 72, 72, 0.3);
 `;
 
 export default class Filters extends React.Component {
   state = {
-    isOpen: false,
-    startDate: null,
-    endDate: null
+    dates: {
+      startDate: null,
+      endDate: null,
+    },
+    guests: {
+      adults: 1,
+      childrens: 0,
+      infants: 0,
+    },
+    roomType: {
+      entire: false,
+      privat: false,
+      shared: false,
+    },
+    instantBook: {
+      book: false,
+    },
+    price: {
+      min: 1,
+      max: 40,
+    },
+    other: {
+      bathrooms: 0,
+      beds: 0,
+      bedrooms: 0,
+      superhost: false,
+      instantBook: false,
+      isOpen: false,
+      heating: false,
+      tv: false,
+      kitchen: false,
+      wifi: false,
+      elebator: false,
+      pool: false,
+      parking: false,
+      wheelchair: false,
+    },
+    openedFilter: null,
   };
 
-  openModal = () => {
-    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+  save = (field, value) => {
+    this.setState({ [field]: value });
   };
 
-  saveDates = (startDate, endDate) => {
-    this.setState({
-      startDate: startDate,
-      endDate: endDate
-    });
+  saveAll = (obj) => {
+    Object.keys(obj).map(key =>
+      this.setState({
+        [key]: obj[key],
+      }));
+  };
+
+  openFilter = (key) => {
+    this.setState({ openedFilter: key });
   };
 
   render() {
@@ -74,15 +83,41 @@ export default class Filters extends React.Component {
             <Row start="xs">
               <Col xs={12} lg={8}>
                 <Dates
-                  saveDates={this.saveDates}
-                  openModal={this.openModal}
-                  isOpen={this.state.isOpen}
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="dates"
+                  handleOpen={this.openFilter}
                 />
-                <Button>Guests</Button>
-                <HiddenBtn>Room type</HiddenBtn>
-                <HiddenBtn>Price</HiddenBtn>
-                <HiddenBtn>Instant book</HiddenBtn>
-                <Button>More filters</Button>
+                <Guests
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="guests"
+                  handleOpen={this.openFilter}
+                />
+                <Room
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="room"
+                  handleOpen={this.openFilter}
+                />
+                <Price
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="price"
+                  handleOpen={this.openFilter}
+                />
+                <InstantBook
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="instantBook"
+                  handleOpen={this.openFilter}
+                />
+                <More
+                  save={this.save}
+                  openedFilter={this.state.openedFilter}
+                  id="more"
+                  handleOpen={this.openFilter}
+                />
               </Col>
             </Row>
           </Grid>

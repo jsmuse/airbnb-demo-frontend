@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Col } from "react-flexbox-grid";
+import React from 'react';
+import styled from 'styled-components';
+import { Col } from 'react-flexbox-grid';
 
 const Image = styled.img`
   width: 100%;
@@ -19,17 +19,15 @@ const Place = styled.p`
   font-family: "CircularBold", san-serif;
 `;
 
-export default props => {
-  return (
-    <Col xs={4} sm={3} md={2}>
-      <Card>
-        <Image
-          src={props.picSrc}
-          srcSet={props.picSrc2x}
-          alt="image experiense"
-        />
-        <Place>{props.place}</Place>
-      </Card>
-    </Col>
-  );
-};
+export default props => (
+  <Col xs={4} sm={3} md={2}>
+    <Card>
+      <Image
+        src={props.picSrc}
+        srcSet={props.picSrc2x}
+        alt="image experiense"
+      />
+      <Place>{props.place}</Place>
+    </Card>
+  </Col>
+);

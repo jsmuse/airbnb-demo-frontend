@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Row, Col } from "react-flexbox-grid";
-import star from "./star.svg";
+import React from 'react';
+import styled from 'styled-components';
+import { Row, Col } from 'react-flexbox-grid';
+import star from './star.svg';
 
 const Card = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const Price = styled.p`
 `;
 const Name = styled.p`
   margin: 8px 0 0;
-  font-family: "CircularBold", san-serif;
+  font-family: 'CircularBold', san-serif;
   font-size: 0.9375rem;
 `;
 
@@ -48,47 +48,49 @@ const Star = styled.img`
   }
 `;
 
-export default props => {
-  return (
-    <Card>
-      <Image
-        src={props.picSrc}
-        srcSet={props.picSrc2x}
-        alt="image experiense"
-      />
-      <Row start="xs">
-        <Col xs>
-          <TextContainer>
-            <Name>
-              <Price>${props.price}</Price>
-              {props.title}
-            </Name>
-          </TextContainer>
-        </Col>
-      </Row>
-      <Row start="xs">
-        <Col xs>
-          <TextContainer>
-            <Options>
-              {props.rentType} · {props.bedsCount} beds
-            </Options>
-          </TextContainer>
-        </Col>
-      </Row>
-      <Row start="xs">
-        <Col xs>
-          <TextContainer>
-            <Star src={star} alt="star" />
-            <Star src={star} alt="star" />
-            <Star src={star} alt="star" />
-            <Star src={star} alt="star" />
-            <Star src={star} alt="star" />
-            <Owners>
-              {props.reviewsCount} · {props.houseGrade}
-            </Owners>
-          </TextContainer>
-        </Col>
-      </Row>
-    </Card>
-  );
+const roomType = {
+  entire_home: 'Entire home',
+  private_room: 'Private room',
+  shared_room: 'Shared room',
 };
+
+const formatBedsCount = quantity => (quantity > 1 ? `${quantity} beds` : `${quantity} bed`);
+
+export default props => (
+  <Card>
+    <Image src={props.picSrc} srcSet={props.picSrc2x} alt="image experiense" />
+    <Row start="xs">
+      <Col xs>
+        <TextContainer>
+          <Name>
+            <Price>${props.price}</Price>
+            {props.title}
+          </Name>
+        </TextContainer>
+      </Col>
+    </Row>
+    <Row start="xs">
+      <Col xs>
+        <TextContainer>
+          <Options>
+            {roomType[props.rentType]} · {formatBedsCount(props.bedsCount)}
+          </Options>
+        </TextContainer>
+      </Col>
+    </Row>
+    <Row start="xs">
+      <Col xs>
+        <TextContainer>
+          <Star src={star} alt="star" />
+          <Star src={star} alt="star" />
+          <Star src={star} alt="star" />
+          <Star src={star} alt="star" />
+          <Star src={star} alt="star" />
+          <Owners>
+            {props.reviewsCount} {props.houseGrade}
+          </Owners>
+        </TextContainer>
+      </Col>
+    </Row>
+  </Card>
+);

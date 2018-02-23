@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import { Row, Col } from "react-flexbox-grid";
+import React from 'react';
+import styled from 'styled-components';
+import { Row, Col } from 'react-flexbox-grid';
 
-import star from "./star.svg";
+import star from './star.svg';
 
 const Card = styled.div`
   display: flex;
@@ -41,38 +41,36 @@ const Star = styled.img`
     margin-right: 8px;
   }
 `;
-export default props => {
-  return (
-    <Col xs={6} sm={4} md={3}>
-      <Card>
-        <Image
-          src={props.picSrc}
-          srcSet={props.picSrc2x}
-          alt="image experiense"
-        />
-        <Row start="xs" top="xs">
-          <Col xs>
-            <TextContainer>
-              <Title>
-                <Price>${props.price} </Price>
-                {props.title}
-              </Title>
-            </TextContainer>
-          </Col>
-        </Row>
-        <Row start="xs">
-          <Col xs>
-            <TextContainer>
-              <Star src={star} alt="star" />
-              <Star src={star} alt="star" />
-              <Star src={star} alt="star" />
-              <Star src={star} alt="star" />
-              <Star src={star} alt="star" />
-              <Reviews>{props.reviewsCount} reviews</Reviews>
-            </TextContainer>
-          </Col>
-        </Row>
-      </Card>
-    </Col>
-  );
-};
+export default props => (
+  <Col xs={6} sm={4} md={3}>
+    <Card>
+      <Image
+        src={props.picSrc}
+        srcSet={props.picSrc2x}
+        alt="image experiense"
+      />
+      <Row start="xs" top="xs">
+        <Col xs>
+          <TextContainer>
+            <Title>
+              <Price>${props.price} </Price>
+              {props.title}
+            </Title>
+          </TextContainer>
+        </Col>
+      </Row>
+      <Row start="xs">
+        <Col xs>
+          <TextContainer>
+            <Star src={star} alt="star" />
+            <Star src={star} alt="star" />
+            <Star src={star} alt="star" />
+            <Star src={star} alt="star" />
+            <Star src={star} alt="star" />
+            <Reviews>{props.reviewsCount} reviews</Reviews>
+          </TextContainer>
+        </Col>
+      </Row>
+    </Card>
+  </Col>
+);

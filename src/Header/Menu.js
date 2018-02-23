@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import logo from "./ic-airbnb.svg";
-import arrow from "./Shape.svg";
+import React from 'react';
+import styled from 'styled-components';
+import logo from './ic-airbnb.svg';
+import arrow from './Shape.svg';
 
 const Menu = styled.button`
   display: flex;
@@ -21,11 +21,9 @@ const Arrow = styled.img`
   }
 `;
 
-export default () => {
-  return (
-    <Menu>
-      <img src={logo} alt="logo" />
-      <Arrow src={arrow} alt="arrow" />
-    </Menu>
-  );
-};
+export default () => (
+  <Menu>
+    <img src={logo} alt="logo" />
+    <Arrow src={arrow} alt="arrow" />
+  </Menu>
+);

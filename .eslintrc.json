@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["fp", "react"],
+  "extends": ["airbnb"],
+  "env": {
+    "browser": true,
+    "commonjs": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "jsx-a11y/anchor-is-valid": false,
+    "react/jsx-filename-extension": "off",
+    "no-unused-vars": "error",
+    "no-var": "error",
+    "fp/no-let": "error",
+    "spaced-comment": "warn"
+  }
+}
